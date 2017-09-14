@@ -1,0 +1,3 @@
+Webseite: http://www.software-challenge.de/
+Github: https://github.com/EasyDevCpp/SoftwareChallange
+Discord: https://discord.gg/mxUKczk
