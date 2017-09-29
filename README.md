@@ -2,11 +2,9 @@
 
 ## Active Branches:
 
-develop <-- push  +
-
-                  |
+develop <-- push
                   
-master <-- merge  +
+master <-- merge
 
 ## Important Links:
 Website: 	http://www.software-challenge.de/
