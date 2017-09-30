@@ -1,6 +1,9 @@
 package sc.player2018.logic;
 
 import sc.player2018.Starter;
+import sc.player2018.logic.Parts.FirstPart;
+import sc.player2018.logic.Parts.SecondPart;
+import sc.player2018.logic.Parts.ThirdPart;
 import sc.plugin2018.GameState;
 import sc.plugin2018.IGameHandler;
 import sc.plugin2018.Move;
@@ -8,6 +11,7 @@ import sc.plugin2018.Player;
 import sc.shared.GameResult;
 import sc.shared.PlayerColor;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Logic implements IGameHandler {
@@ -15,6 +19,10 @@ public class Logic implements IGameHandler {
     GameState gs;
     Player p;
     Player enemy;
+
+    FirstPart first;
+    SecondPart second;
+    ThirdPart third;
 
     public Logic(Starter client) {
         System.out.println("Starte");
@@ -37,6 +45,15 @@ public class Logic implements IGameHandler {
         //Hier kommt der wichtige Kram rein
         Random r = new Random();
         int temp = r.nextInt(gs.getPossibleMoves().size());
+
+        if(gs.getTurn() > 0 && gs.getTurn() <= 10){
+            first = new FirstPart(gs, p, enemy);
+        } else if(gs.getTurn() > 10 && gs.getTurn() <= 25){
+            second = new SecondPart(gs, p, enemy);
+        } else if(gs.getTurn() > 25 && gs.getTurn() <= 30){
+            third = new ThirdPart(gs, p, enemy);
+        }
+
 
         System.out.println(temp + "/" + gs.getPossibleMoves().size());
 
