@@ -46,17 +46,21 @@ public class Logic implements IGameHandler {
         Random r = new Random();
         int temp = r.nextInt(gs.getPossibleMoves().size());
 
-        if(gs.getTurn() > 0 && gs.getTurn() <= 10){
-            first = new FirstPart(gs, p, enemy);
-        } else if(gs.getTurn() > 10 && gs.getTurn() <= 25){
-            second = new SecondPart(gs, p, enemy);
-        } else if(gs.getTurn() > 25 && gs.getTurn() <= 30){
-            third = new ThirdPart(gs, p, enemy);
+        if(gs.getTurn()<=10) {
+            first=new FirstPart(gs,p,enemy);
+            //first.processAI();
+            //sendAction(gs.getPossibleMoves().get(first.getMove()));
+        } else if(gs.getTurn()<=25) {
+            second=new SecondPart(gs,p,enemy);
+            second.processAI();
+            sendAction(gs.getPossibleMoves().get(second.getMove()));
+        } else if(gs.getTurn()<=30) {
+            third=new ThirdPart(gs,p,enemy);
+            //third.processAI();
+            //sendAction(gs.getPossibleMoves().get(third.getMove()));
         }
 
-
         System.out.println(temp + "/" + gs.getPossibleMoves().size());
-
         sendAction(gs.getPossibleMoves().get(temp));
     }
 
