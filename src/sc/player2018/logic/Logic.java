@@ -15,14 +15,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Logic implements IGameHandler {
-    Starter client;
-    GameState gs;
-    Player p;
-    Player enemy;
+    private Starter client;
+    private GameState gs;
+    private Player p;
+    private Player enemy;
 
-    FirstPart first;
-    SecondPart second;
-    ThirdPart third;
+    private FirstPart first;
+    private SecondPart second;
+    private ThirdPart third;
 
     public Logic(Starter client) {
         System.out.println("Starte");
@@ -43,25 +43,19 @@ public class Logic implements IGameHandler {
     @Override
     public void onRequestAction() {
         //Hier kommt der wichtige Kram rein
-        Random r = new Random();
-        int temp = r.nextInt(gs.getPossibleMoves().size());
-
         if(gs.getTurn()<=10) {
             first=new FirstPart(gs,p,enemy);
-            //first.processAI();
-            //sendAction(gs.getPossibleMoves().get(first.getMove()));
+            first.processAI();
+            sendAction(first.getMove());
         } else if(gs.getTurn()<=25) {
             second=new SecondPart(gs,p,enemy);
             second.processAI();
-            sendAction(gs.getPossibleMoves().get(second.getMove()));
+            sendAction(second.getMove());
         } else if(gs.getTurn()<=30) {
             third=new ThirdPart(gs,p,enemy);
-            //third.processAI();
-            //sendAction(gs.getPossibleMoves().get(third.getMove()));
+            third.processAI();
+            sendAction(third.getMove());
         }
-
-        System.out.println(temp + "/" + gs.getPossibleMoves().size());
-        sendAction(gs.getPossibleMoves().get(temp));
     }
 
     @Override
