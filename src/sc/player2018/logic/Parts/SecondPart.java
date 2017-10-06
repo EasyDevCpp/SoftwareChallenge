@@ -2,6 +2,8 @@ package sc.player2018.logic.Parts;
 
 import sc.plugin2018.*;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class SecondPart {
@@ -12,9 +14,11 @@ public class SecondPart {
     private Player enemy;
     private int moveId;
     private ArrayList<Action> action=new ArrayList<>();
+    private BufferedWriter fout;
 
-    public SecondPart(){
+    public SecondPart(BufferedWriter f){
         this.moveId = 0;
+        fout=f;
     }
 
     public void update(GameState gs, Player p, Player enemy) {
@@ -25,7 +29,7 @@ public class SecondPart {
 
     public void processAI(){
         Board b=gs.getBoard();
-action.clear();
+        action.clear();
         if(!gs.fieldOfCurrentPlayer().equals(0)&&!gs.fieldOfCurrentPlayer().equals(1)&&p.getCarrots()>100) {
             action.add(new ExchangeCarrots(10));
         } else {
@@ -50,6 +54,16 @@ action.clear();
                     break;
                 }
             }
+        }
+    }
+
+    private void logMessage(String msg, boolean newLine){
+        try {
+            if(newLine) msg = "\n" + msg;
+            fout.write(msg);
+            fout.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -4,6 +4,8 @@ import sc.plugin2018.GameState;
 import sc.plugin2018.Move;
 import sc.plugin2018.Player;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Random;
 
 public class ThirdPart {
@@ -13,9 +15,11 @@ public class ThirdPart {
     private Player p;
     private Player enemy;
     private int moveId;
+    private BufferedWriter fout;
 
-    public ThirdPart(){
+    public ThirdPart(BufferedWriter f){
         this.moveId = 0;
+        fout = f;
     }
 
     public void update(GameState gs, Player p, Player enemy) {
@@ -27,6 +31,16 @@ public class ThirdPart {
     public void processAI() {
         Random r = new Random();
         moveId = r.nextInt(gs.getPossibleMoves().size());
+    }
+
+    private void logMessage(String msg, boolean newLine){
+        try {
+            if(newLine) msg = "\n" + msg;
+            fout.write(msg);
+            fout.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Move getMove(){

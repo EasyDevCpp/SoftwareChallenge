@@ -2,6 +2,8 @@ package sc.player2018.logic.Parts;
 
 import sc.plugin2018.*;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,16 +15,16 @@ public class FirstPart {
     private Player p;
     private Player enemy;
     private int moveId;
-    private Board board;
 
     //own variables
-    private int saladId;
+    private int step;
     private Move m;
+    private BufferedWriter fout;
 
-    public FirstPart(){
+    public FirstPart(BufferedWriter f){
         moveId = 0;
-
-        saladId = 0;
+        step = 0;
+        fout = f;
     }
 
     public void update(GameState gs, Player p, Player enemy) {
@@ -32,31 +34,38 @@ public class FirstPart {
     }
 
     public void processAI(){
-        System.out.println("Working on first part...");
+        logMessage("Working on first part...", true);
+
 
         Random r = new Random();
         moveId = r.nextInt(gs.getPossibleMoves().size());
 
+        /*Board b = gs.getBoard();
+        ArrayList<Action> actions = new ArrayList<>();
 
-        /*if(saladId < 10){                                         //So gehen spezifische Züge mit eigens erstellten Aktionen. Hat bisher keinen tieferen Sinn und mindestens 1 Stunde gedauert das herauszufinden
-            first();
+
+        if(step < 1){
+            if(!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+
+            }
         }
 
-        ArrayList<Action> actions = new ArrayList<>();
-        //actions.add(new ExchangeCarrots(10));
-        actions.add(new Advance(1));
+
         m = new Move(actions);*/
     }
 
-    private void first(){
-        /*if(enemyOnNextFieldType(FieldType.SALAD)){
-            moveId = board.getNextFieldByType(FieldType.CARROT, p.getFieldIndex());
-        }*/
+    private boolean enemyOnNextFieldType(FieldType type){
+        return gs.getBoard().getNextFieldByType(type, p.getFieldIndex()) == gs.getBoard().getNextFieldByType(type, enemy.getFieldIndex());
     }
 
-    private boolean enemyOnNextFieldType(FieldType type){
-        //return board.getNextFieldByType(type, p.getFieldIndex()) == board.getNextFieldByType(type, enemy.getFieldIndex());
-        return false;
+    private void logMessage(String msg, boolean newLine){
+        try {
+            if(newLine) msg = "\n" + msg;
+            fout.write(msg);
+            fout.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Move getMove(){

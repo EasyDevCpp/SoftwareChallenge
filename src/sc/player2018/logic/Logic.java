@@ -10,9 +10,7 @@ import sc.plugin2018.Move;
 import sc.plugin2018.Player;
 import sc.shared.GameResult;
 import sc.shared.PlayerColor;
-
-import java.util.ArrayList;
-import java.util.Random;
+import java.io.*;
 
 public class Logic implements IGameHandler {
     private Starter client;
@@ -23,13 +21,23 @@ public class Logic implements IGameHandler {
     private FirstPart first;
     private SecondPart second;
     private ThirdPart third;
+    private BufferedWriter fout;
 
     public Logic(Starter client) {
         System.out.println("Starte");
         this.client = client;
-        first=new FirstPart();
-        second=new SecondPart();
-        third=new ThirdPart();
+
+        try {
+            String file = Logic.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();            //erzeugt log-Datei am Speicherort der .jar
+            file = file.substring(0, file.lastIndexOf("/")) + "/log.txt";
+            fout = new BufferedWriter(new FileWriter(new File(file), true));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        first=new FirstPart(fout);
+        second=new SecondPart(fout);
+        third=new ThirdPart(fout);
     }
 
     @Override
