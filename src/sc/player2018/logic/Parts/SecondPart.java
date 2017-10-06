@@ -25,6 +25,7 @@ public class SecondPart {
 
     public void processAI(){
         Board b=gs.getBoard();
+action.clear();
         if(!gs.fieldOfCurrentPlayer().equals(0)&&!gs.fieldOfCurrentPlayer().equals(1)&&p.getCarrots()>100) {
             action.add(new ExchangeCarrots(10));
         } else {
