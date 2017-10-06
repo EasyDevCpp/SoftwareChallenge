@@ -27,6 +27,9 @@ public class Logic implements IGameHandler {
     public Logic(Starter client) {
         System.out.println("Starte");
         this.client = client;
+        first=new FirstPart();
+        second=new SecondPart();
+        third=new ThirdPart();
     }
 
     @Override
@@ -42,17 +45,16 @@ public class Logic implements IGameHandler {
 
     @Override
     public void onRequestAction() {
-        //Hier kommt der wichtige Kram rein
-        if(gs.getTurn()<=10) {
-            first=new FirstPart(gs,p,enemy);
+        if(p.getFieldIndex()<=35) {
+            first.update(gs,p,enemy);
             first.processAI();
             sendAction(first.getMove());
-        } else if(gs.getTurn()<=25) {
-            second=new SecondPart(gs,p,enemy);
+        } else if(p.getFieldIndex()<=45) {
+            second.update(gs,p,enemy);
             second.processAI();
             sendAction(second.getMove());
-        } else if(gs.getTurn()<=30) {
-            third=new ThirdPart(gs,p,enemy);
+        } else if(p.getFieldIndex()<=65) {
+            third.update(gs,p,enemy);
             third.processAI();
             sendAction(third.getMove());
         }

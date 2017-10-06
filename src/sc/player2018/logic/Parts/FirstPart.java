@@ -19,14 +19,16 @@ public class FirstPart {
     private int saladId;
     private Move m;
 
-    public FirstPart(GameState gs, Player p, Player enemy, Board b){
+    public FirstPart(){
+        moveId = 0;
+
+        saladId = 0;
+    }
+
+    public void update(GameState gs, Player p, Player enemy) {
         this.gs = gs;
         this.p = p;
         this.enemy = enemy;
-        moveId = 0;
-        board = b;
-
-        saladId = 0;
     }
 
     public void processAI(){

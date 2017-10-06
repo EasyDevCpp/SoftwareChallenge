@@ -1,10 +1,8 @@
 package sc.player2018.logic.Parts;
 
-import sc.plugin2018.GameState;
-import sc.plugin2018.Move;
-import sc.plugin2018.Player;
+import sc.plugin2018.*;
 
-import java.util.Random;
+import java.util.*;
 
 public class SecondPart {
     private int[] karottenVerbrauch = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210,231,253,276,300,325,351,378,406,435,465,496,528,561,595,630,666,703,741,780,820,861,903,946,990};
@@ -13,22 +11,48 @@ public class SecondPart {
     private Player p;
     private Player enemy;
     private int moveId;
+    private ArrayList<Action> action=new ArrayList<>();
 
-    public SecondPart(GameState gs, Player p, Player enemy){
-        this.gs = gs;
-        this.p = p;
-        this.enemy = enemy;
+    public SecondPart(){
         this.moveId = 0;
     }
 
-    public void processAI(){
-        System.out.println("Working on second part...");
-
-        Random r = new Random();
-        moveId = r.nextInt(gs.getPossibleMoves().size());
+    public void update(GameState gs, Player p, Player enemy) {
+        this.gs = gs;
+        this.p = p;
+        this.enemy = enemy;
     }
 
-    public Move getMove(){
-        return gs.getPossibleMoves().get(moveId);
+    public void processAI(){
+        Board b=gs.getBoard();
+        if(!gs.fieldOfCurrentPlayer().equals(0)&&!gs.fieldOfCurrentPlayer().equals(1)&&p.getCarrots()>100) {
+            action.add(new ExchangeCarrots(10));
+        } else {
+            boolean turn=false;
+            for(Move m: gs.getPossibleMoves()) {
+                for(Action t: m.getActions()) {
+                    if(t instanceof Advance) {
+                        action.add(t);
+                        turn=true;
+                        break;
+                    } else if(t instanceof EatSalad) {
+                        action.add(t);
+                        turn=true;
+                        break;
+                    } else if(t instanceof ExchangeCarrots) {
+                        action.add(t);
+                        turn=true;
+                        break;
+                    }
+                }
+                if(turn) {
+                    break;
+                }
+            }
+        }
+    }
+
+    public Move getMove() {
+        return new Move(action);
     }
 }
