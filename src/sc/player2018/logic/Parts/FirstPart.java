@@ -18,6 +18,8 @@ public class FirstPart {
 
     //own variables
     private int step;
+    private String doThis;
+    private boolean step0WasAtHare;
     private Move m;
     private BufferedWriter fout;
 
@@ -25,6 +27,8 @@ public class FirstPart {
         moveId = 0;
         step = 0;
         fout = f;
+        doThis = "";
+        step0WasAtHare = false;
     }
 
     public void update(GameState gs, Player p, Player enemy) {
@@ -34,28 +38,105 @@ public class FirstPart {
     }
 
     public void processAI(){
-        logMessage("Working on first part...", true);
+        logMessage("first part (" + p.getPlayerColor().name() + "): ", true);
 
-
-        Random r = new Random();
-        moveId = r.nextInt(gs.getPossibleMoves().size());
-
-        /*Board b = gs.getBoard();
+        Board b = gs.getBoard();
         ArrayList<Action> actions = new ArrayList<>();
 
-
-        if(step < 1){
-            if(!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
-
+        if(doThis.equals("eatSalad") || doThis.equals("eatCarrot")){
+            if(doThis.equals("eatSalad")){
+                actions.add(new EatSalad());
+                doThis = "";
+                logMessage("step: 0, eat salad", false);
+            } else if(doThis.equals("eatCarrot")){
+                actions.add(new ExchangeCarrots(+10));
+                doThis = "";
+                logMessage("step: 0, eat carrot", false);
+            }
+        } else{
+            if(step == 0) { //to first salad
+                if (!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                    logMessage("step: 0, to salad", false);
+                    actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()));
+                    doThis = "eatSalad";
+                    step = 1;
+                } else {
+                    if (enemyOnNextFieldType(FieldType.SALAD)) {
+                        if(step0WasAtHare || b.getNextFieldByType(FieldType.POSITION_2, p.getFieldIndex()) < b.getNextFieldByType(FieldType.HARE, p.getFieldIndex())){
+                            if(karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_2, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                                actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_2, p.getFieldIndex()) - p.getFieldIndex()));
+                                step0WasAtHare = false;
+                                logMessage("step: 0, to pos2", false);
+                            } else{
+                                actions.add(new Skip());
+                                logMessage("step: 0, to pos2 skip", false);
+                            }
+                        } else{
+                            if(karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){ //stage0WasAtHare == false
+                                actions.add(new Advance(b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()));
+                                actions.add(new Card(CardType.EAT_SALAD, 1));
+                                step0WasAtHare = true;
+                                logMessage("step: 0, to hare", false);
+                            } else{
+                                actions.add(new Skip());
+                                logMessage("step: 0, to hare skip", false);
+                            }
+                        }
+                    } else {
+                        logMessage("step: 0, to salad", false);
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()));
+                        doThis = "eatSalad";
+                        step = 1;
+                    }
+                }
+            } else if(step == 1){
+                if(p.getFieldIndex() > enemy.getFieldIndex()){
+                    if(!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex())] <= p.getCarrots()){
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()));
+                        doThis = "eatSalad";
+                        step = 2;
+                        logMessage("step: 1, to salad", false);
+                    } else if(!enemyOnNextFieldType(FieldType.POSITION_1) && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) - p.getFieldIndex()));
+                        logMessage("step: 1, to pos1", false);
+                    } else if(!enemyOnNextFieldType(FieldType.HARE) && p.getCards().contains(CardType.EAT_SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()));
+                        actions.add(new Card(CardType.EAT_SALAD, 1));
+                        logMessage("step: 1, to hare", false);
+                    } else if(!enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()));
+                        doThis = "eatCarrot";
+                        logMessage("step: 1, to carrot", false);
+                    }
+                } else{
+                    if(!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex())); //go to second part
+                        logMessage("step: 1, to salad", false);
+                    } else if(!enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()));
+                        doThis = "eatCarrot";
+                        logMessage("step: 1, to carrot", false);
+                    } else if(!enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
+                        actions.add(new FallBack(1));
+                        logMessage("step: 1, to hedgehog", false);
+                    } else{
+                        actions.add(new Skip());
+                        logMessage("step: 1, skip", false);
+                    }
+                }
             }
         }
 
-
-        m = new Move(actions);*/
+        m = new Move(actions);
+        m.orderActions();
     }
 
+
     private boolean enemyOnNextFieldType(FieldType type){
-        return gs.getBoard().getNextFieldByType(type, p.getFieldIndex()) == gs.getBoard().getNextFieldByType(type, enemy.getFieldIndex());
+        return gs.getBoard().getNextFieldByType(type, p.getFieldIndex()) == enemy.getFieldIndex();
+    }
+    private boolean enemyOnPreviousFieldType(FieldType type){
+        return gs.getBoard().getPreviousFieldByType(type, p.getFieldIndex()) == enemy.getFieldIndex();
     }
 
     private void logMessage(String msg, boolean newLine){
@@ -69,7 +150,7 @@ public class FirstPart {
     }
 
     public Move getMove(){
-        return gs.getPossibleMoves().get(moveId);
-        //return m;
+        //return gs.getPossibleMoves().get(moveId);
+        return m;
     }
 }

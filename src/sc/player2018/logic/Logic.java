@@ -31,6 +31,9 @@ public class Logic implements IGameHandler {
             String file = Logic.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();            //erzeugt log-Datei am Speicherort der .jar
             file = file.substring(0, file.lastIndexOf("/")) + "/log.txt";
             fout = new BufferedWriter(new FileWriter(new File(file), true));
+
+            fout.write("\n\n*********************\n\tnew match\n*********************");
+            fout.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,11 +56,11 @@ public class Logic implements IGameHandler {
 
     @Override
     public void onRequestAction() {
-        if(p.getFieldIndex()<=35) {
+        if(p.getFieldIndex()<22) {
             first.update(gs,p,enemy);
             first.processAI();
             sendAction(first.getMove());
-        } else if(p.getFieldIndex()<=45) {
+        } else if(p.getFieldIndex()<42) {
             second.update(gs,p,enemy);
             second.processAI();
             sendAction(second.getMove());
