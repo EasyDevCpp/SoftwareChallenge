@@ -92,7 +92,7 @@ public class FirstPart {
             } else if(step == 1){
                 if(p.getFieldIndex() > enemy.getFieldIndex()){
                     if(!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex())] <= p.getCarrots()){
-                        actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()));
+                        actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()));  //go to second part
                         doThis = "eatSalad";
                         step = 2;
                         logMessage("step: 1, to salad", false);
@@ -111,6 +111,8 @@ public class FirstPart {
                 } else{
                     if(!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
                         actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex())); //go to second part
+                        doThis = "eatSalad";
+                        step = 2;
                         logMessage("step: 1, to salad", false);
                     } else if(!enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
                         actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()));
@@ -124,6 +126,18 @@ public class FirstPart {
                         logMessage("step: 1, skip", false);
                     }
                 }
+            } else if(step == 2){
+                if(!enemyOnNextFieldType(FieldType.POSITION_1) && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                    actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) - p.getFieldIndex()));
+                    logMessage("step: 2, to pos1", false);
+                } else if(!enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                    actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()));
+                    logMessage("step: 2, to carrot", false);
+                } else{
+                    actions.add(new Skip());
+                    logMessage("step: 2, skip", false);
+                }
+                logMessage(" !!!!! Now playing: SecondPart", false);
             }
         }
 

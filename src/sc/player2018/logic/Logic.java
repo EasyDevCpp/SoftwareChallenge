@@ -56,7 +56,7 @@ public class Logic implements IGameHandler {
 
     @Override
     public void onRequestAction() {
-        if(p.getFieldIndex()<22) {
+        if(p.getFieldIndex()<23) {
             first.update(gs,p,enemy);
             first.processAI();
             sendAction(first.getMove());
