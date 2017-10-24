@@ -31,12 +31,12 @@ public class SecondPart {
 
     public void processAI() {
         Board b=gs.getBoard();
-        distances[0]=ncarrots[b.getNextFieldByType(FieldType.HEDGEHOG,p.getFieldIndex())-p.getFieldIndex()];
-        distances[1]=ncarrots[b.getNextFieldByType(FieldType.HARE,p.getFieldIndex())-p.getFieldIndex()];
-        distances[2]=ncarrots[b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex())-p.getFieldIndex()];
-        distances[3]=ncarrots[b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex())-p.getFieldIndex()];
-        distances[4]=ncarrots[b.getNextFieldByType(FieldType.SALAD,p.getFieldIndex())-p.getFieldIndex()];
-        distances[5]=ncarrots[b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex())-p.getFieldIndex()];
+        distances[0]=b.getNextFieldByType(FieldType.HEDGEHOG,p.getFieldIndex())-p.getFieldIndex();
+        distances[1]=b.getNextFieldByType(FieldType.HARE,p.getFieldIndex())-p.getFieldIndex();
+        distances[2]=b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex())-p.getFieldIndex();
+        distances[3]=b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex())-p.getFieldIndex();
+        distances[4]=b.getNextFieldByType(FieldType.SALAD,p.getFieldIndex())-p.getFieldIndex();
+        distances[5]=b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex())-p.getFieldIndex();
         enemy_fields[0]=enemyOnNextFieldType(FieldType.HEDGEHOG);
         enemy_fields[1]=enemyOnNextFieldType(FieldType.HARE);
         enemy_fields[2]=enemyOnNextFieldType(FieldType.POSITION_1);
