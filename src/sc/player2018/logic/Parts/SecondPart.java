@@ -44,7 +44,7 @@ public class SecondPart {
         enemy_fields[4]=enemyOnNextFieldType(FieldType.SALAD);
         enemy_fields[5]=enemyOnNextFieldType(FieldType.CARROT);
         
-        if(!enemy_fields[1]&&distances[1]<=p.getCarrots()) {
+        if(!enemy_fields[1]&&ncarrots[distances[1]]<=p.getCarrots()) {
             actions.add(new Advance(distances[1]));
             if(p.ownsCardOfType(CardType.EAT_SALAD)) {
                 actions.add(new Card(CardType.EAT_SALAD,1));
@@ -55,13 +55,13 @@ public class SecondPart {
             } else if(enemy_fields[0]&&p.ownsCardOfType(CardType.HURRY_AHEAD)) {
                 actions.add(new Card(CardType.HURRY_AHEAD,1));
             }
-        } else if((!enemy_fields[2]&&distances[2]<=p.getCarrots())||(!enemy_fields[3]&&distances[3]<=p.getCarrots())) {
+        } else if((!enemy_fields[2]&&ncarrots[distances[2]]<=p.getCarrots())||(!enemy_fields[3]&&ncarrots[distances[3]]<=p.getCarrots())) {
             if(p.getFieldIndex()>enemy.getFieldIndex()) {
                 actions.add(new Advance(distances[2]));
             } else {
                 actions.add(new Advance(distances[3]));
             }
-        } else if(!enemy_fields[5]&&distances[5]<=p.getCarrots()) {
+        } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()) {
             actions.add(new Advance(distances[5]));
             if(p.getCarrots()<20) {
                 actions.add(new ExchangeCarrots(10));
