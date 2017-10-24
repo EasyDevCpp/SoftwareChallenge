@@ -75,6 +75,7 @@ public class FirstPart {
                             if(karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){ //stage0WasAtHare == false
                                 actions.add(new Advance(b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()));
                                 actions.add(new Card(CardType.EAT_SALAD, 1));
+
                                 step0WasAtHare = true;
                                 logMessage("step: 0, to hare", false);
                             } else{
@@ -114,11 +115,11 @@ public class FirstPart {
                         doThis = "eatSalad";
                         step = 2;
                         logMessage("step: 1, to salad", false);
-                    } else if(!enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                    } else if(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) < b.getNextFieldByType(FieldType.SALAD,p.getFieldIndex()) && !enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
                         actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()));
                         doThis = "eatCarrot";
                         logMessage("step: 1, to carrot", false);
-                    } else if(!enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
+                    } else if(b.getPreviousFieldByType(FieldType.HEDGEHOG, p.getFieldIndex()) < b.getNextFieldByType(FieldType.SALAD,p.getFieldIndex()) && !enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
                         actions.add(new FallBack(1));
                         logMessage("step: 1, to hedgehog", false);
                     } else{
@@ -130,14 +131,19 @@ public class FirstPart {
                 if(!enemyOnNextFieldType(FieldType.POSITION_1) && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
                     actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) - p.getFieldIndex()));
                     logMessage("step: 2, to pos1", false);
+                    logMessage(" !!!!! Now playing: SecondPart", false);
                 } else if(!enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
                     actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()));
                     logMessage("step: 2, to carrot", false);
+                    logMessage(" !!!!! Now playing: SecondPart", false);
+                } else if(!enemyOnNextFieldType(FieldType.HEDGEHOG) && karottenVerbrauch[b.getNextFieldByType(FieldType.HEDGEHOG, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()){
+                    actions.add(new Advance(b.getNextFieldByType(FieldType.HEDGEHOG, p.getFieldIndex()) - p.getFieldIndex()));
+                    logMessage("step: 2, to headgehog", false);
+                    logMessage(" !!!!! Now playing: SecondPart", false);
                 } else{
                     actions.add(new Skip());
                     logMessage("step: 2, skip", false);
                 }
-                logMessage(" !!!!! Now playing: SecondPart", false);
             }
         }
 
