@@ -38,28 +38,33 @@ public class SecondPart {
         enemy_fields[3]=enemyOnNextFieldType(FieldType.POSITION_2);
         enemy_fields[4]=enemyOnNextFieldType(FieldType.SALAD);
         enemy_fields[5]=enemyOnNextFieldType(FieldType.CARROT);
+        actions.clear(); //@Robin wie oft denn noch? Wir sind in Java und nicht in C++ :)
+        logMessage("second part (" + p.getPlayerColor().name() + "): ", true);
         if(next_turn!=0) {
             if(next_turn==4) {
-                actions.add(new EatSalad());
+                actions.add(new EatSalad(0));
             } else if(next_turn==5) {
-                actions.add(new ExchangeCarrots(10));   
+                actions.add(new ExchangeCarrots(10,0));
             }
             next_turn=0;
         } else {
             if(!enemy_fields[4]&&ncarrots[distances[4]]<=p.getCarrots()) {
                 actions.add(new Advance(distances[4]));
                 next_turn=4;
-            } else if((!enemy_fields[2]&&ncarrots[distances[2]]<=p.getCarrots())||(!enemy_fields[3]&&ncarrots[distances[3]]<=p.getCarrots())) {
-                if(p.getFieldIndex()>enemy.getFieldIndex()) {
-                    actions.add(new Advance(distances[2]));
-                } else {
-                    actions.add(new Advance(distances[3]));
-                }
+                logMessage("1", false);
+            } else if(!enemy_fields[2]&&ncarrots[distances[2]]<=p.getCarrots() && p.getFieldIndex()>enemy.getFieldIndex()) { //die beiden Züge zusammenzusetzen ergibt für mich keinen Sinn und kann meiner Meinung nach zu ungewollten Zügen führen
+                logMessage("2", false);
+                actions.add(new Advance(distances[2]));
+            } else if(!enemy_fields[3]&&ncarrots[distances[3]]<=p.getCarrots() && p.getFieldIndex()<enemy.getFieldIndex()) { //die beiden Züge zusammenzusetzen ergibt für mich keinen Sinn und kann meiner Meinung nach zu ungewollten Zügen führen
+                logMessage("3", false);
+                actions.add(new Advance(distances[3]));
             } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()) {
+                logMessage("4 carrots " + ncarrots[distances[5]] + " " + p.getCarrots(), false);
                 actions.add(new Advance(distances[5]));
                 next_turn=5;   
             } else {
-                actions.add(new Skip());   
+                logMessage("5", false);
+                actions.add(new Skip(1));
             }
         }
         m = new Move(actions);
