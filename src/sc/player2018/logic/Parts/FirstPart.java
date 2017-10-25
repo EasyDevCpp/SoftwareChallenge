@@ -45,7 +45,7 @@ public class FirstPart {
 
         if(doThis.equals("eatSalad") || doThis.equals("eatCarrot")){
             if(doThis.equals("eatSalad")){
-                actions.add(new EatSalad());
+                actions.add(new EatSalad(0));
                 doThis = "";
                 logMessage("step: 0, eat salad", false);
             } else if(doThis.equals("eatCarrot")){
@@ -68,7 +68,7 @@ public class FirstPart {
                                 step0WasAtHare = false;
                                 logMessage("step: 0, to pos2", false);
                             } else{
-                                actions.add(new Skip());
+                                actions.add(new Skip(1));
                                 logMessage("step: 0, to pos2 skip", false);
                             }
                         } else{
@@ -79,7 +79,7 @@ public class FirstPart {
                                 step0WasAtHare = true;
                                 logMessage("step: 0, to hare", false);
                             } else{
-                                actions.add(new Skip());
+                                actions.add(new Skip(1));
                                 logMessage("step: 0, to hare skip", false);
                             }
                         }
@@ -123,7 +123,7 @@ public class FirstPart {
                         actions.add(new FallBack(1));
                         logMessage("step: 1, to hedgehog", false);
                     } else{
-                        actions.add(new Skip());
+                        actions.add(new Skip(1));
                         logMessage("step: 1, skip", false);
                     }
                 }
@@ -141,7 +141,7 @@ public class FirstPart {
                     logMessage("step: 2, to headgehog", false);
                     logMessage(" !!!!! Now playing: SecondPart", false);
                 } else{
-                    actions.add(new Skip());
+                    actions.add(new Skip(1));
                     logMessage("step: 2, skip", false);
                 }
             }
