@@ -38,43 +38,62 @@ public class SecondPart {
         enemy_fields[3]=enemyOnNextFieldType(FieldType.POSITION_2);
         enemy_fields[4]=enemyOnNextFieldType(FieldType.SALAD);
         enemy_fields[5]=enemyOnNextFieldType(FieldType.CARROT);
-        actions.clear(); //@Robin wie oft denn noch? Wir sind in Java und nicht in C++ :)
-        logMessage("second part (" + p.getPlayerColor().name() + "): ", true);
+        actions.clear();
+        logMessage("second part ("+p.getPlayerColor().name()+"): ",false);
         if(next_turn!=0) {
             if(next_turn==4) {
+                logMessage("eat salad",false);
                 actions.add(new EatSalad(0));
             } else if(next_turn==5) {
-                actions.add(new ExchangeCarrots(10,0));
+                logMessage("exchange carrots: +10 or -10",false);
+                if(p.getCarrots()<90) actions.add(new ExchangeCarrots(10,0));                    
+                else actions.add(new ExchangeCarrots(-10,0));
             }
             next_turn=0;
         } else {
-            if(!enemy_fields[4]&&ncarrots[distances[4]]<=p.getCarrots()) {
-                actions.add(new Advance(distances[4]));
-                next_turn=4;
-                logMessage("1", false);
-            } else if(!enemy_fields[2]&&ncarrots[distances[2]]<=p.getCarrots() && p.getFieldIndex()>enemy.getFieldIndex()) { //die beiden Züge zusammenzusetzen ergibt für mich keinen Sinn und kann meiner Meinung nach zu ungewollten Zügen führen
-                logMessage("2", false);
-                actions.add(new Advance(distances[2]));
-            } else if(!enemy_fields[3]&&ncarrots[distances[3]]<=p.getCarrots() && p.getFieldIndex()<enemy.getFieldIndex()) { //die beiden Züge zusammenzusetzen ergibt für mich keinen Sinn und kann meiner Meinung nach zu ungewollten Zügen führen
-                logMessage("3", false);
-                actions.add(new Advance(distances[3]));
-            } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()) {
-                logMessage("4 carrots " + ncarrots[distances[5]] + " " + p.getCarrots(), false);
-                actions.add(new Advance(distances[5]));
-                next_turn=5;   
+            if(p.getCarrots()>10) {
+                if(!enemy_fields[4]&&ncarrots[distances[4]]<=p.getCarrots()) {
+                    logMessage("goto salad",false);                
+                    actions.add(new Advance(distances[4]));
+                    next_turn=4;
+                } else if((!enemy_fields[2]&&ncarrots[distances[2]]<=p.getCarrots())&&(!enemy_fields[3]&&ncarrots[distances[3]]<=p.getCarrots())) {
+                    logMessage("goto position 1 or 2",false);
+                    if(p.getFieldIndex()>enemy.getFieldIndex()) actions.add(new Advance(distances[2]));
+                    else if(p.getFieldIndex()<enemy.getFieldIndex()) actions.add(new Advance(distances[3]));
+                } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()) {
+                    logMessage("goto carrots "+ncarrots[distances[5]]+" "+p.getCarrots(),false);
+                    actions.add(new Advance(distances[5]));
+                    next_turn=5;
+                } else if(!enemy_fields[1]&&ncarrots[distances[1]]<=p.getCarrots()) {
+                    logMessage("playing card",false);                
+                    actions.add(new Advance(distances[1]));
+                    if(p.ownsCardOfType(CardType.EAT_SALAD)) actions.add(new Card(CardType.EAT_SALAD,1));
+                    else if(p.getCarrots()<=10&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,20));
+                    else if(p.getCarrots()>=80&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,-20));
+                    else if(enemy_fields[0]&&p.ownsCardOfType(CardType.HURRY_AHEAD)) actions.add(new Card(CardType.HURRY_AHEAD,1));
+                } else {
+                    logMessage("skip",false);
+                    actions.add(new Skip(1));
+                }
             } else {
-                logMessage("5", false);
-                actions.add(new Skip(1));
+                if(b.getPreviousFieldByType(FieldType.CARROT,p.getFieldIndex())!=enemy.getFieldIndex()) {
+                    logMessage("fallback",false);
+                    actions.add(new FallBack(b.getPreviousFieldByType(FieldType.CARROT,p.getFieldIndex())-p.getFieldIndex()));
+                    next_turn=5;
+                } else {
+                    logMessage("skip",false);
+                    actions.add(new Skip(1));                    
+                }
             }
         }
         m = new Move(actions);
         m.orderActions();
     }
     private boolean enemyOnNextFieldType(FieldType type){
-        return gs.getBoard().getNextFieldByType(type, p.getFieldIndex()) == enemy.getFieldIndex();
+        return gs.getBoard().getNextFieldByType(type, p.getFieldIndex())==enemy.getFieldIndex();
     }
     private boolean enemyOnPreviousFieldType(FieldType type){
-        return gs.getBoard().getPreviousFieldByType(type, p.getFieldIndex()) == enemy.getFieldIndex();
+        return gs.getBoard().getPreviousFieldByType(type, p.getFieldIndex())==enemy.getFieldIndex();
     }
     public Move getMove() {
         return m;

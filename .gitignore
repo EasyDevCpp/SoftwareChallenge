@@ -26,3 +26,5 @@ build/jar/
 doc/
 
 *.appimage
+
+*.java~
