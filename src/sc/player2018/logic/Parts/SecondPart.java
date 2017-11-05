@@ -60,7 +60,7 @@ public class SecondPart {
                     logMessage("goto position 1 or 2",false);
                     if(p.getFieldIndex()>enemy.getFieldIndex()) actions.add(new Advance(distances[2]));
                     else if(p.getFieldIndex()<enemy.getFieldIndex()) actions.add(new Advance(distances[3]));
-                } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()) {
+                } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()&&p.getLastNonSkipAction() !instanceof ExchangeCarrots) {
                     logMessage("goto carrots "+ncarrots[distances[5]]+" "+p.getCarrots(),false);
                     actions.add(new Advance(distances[5]));
                     next_turn=5;
