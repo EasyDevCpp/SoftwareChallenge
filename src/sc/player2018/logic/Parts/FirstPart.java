@@ -120,7 +120,7 @@ public class FirstPart {
                         doThis = "eatCarrot";
                         logMessage("step: 1, to carrot", false);
                     } else if(b.getPreviousFieldByType(FieldType.HEDGEHOG, p.getFieldIndex()) < b.getNextFieldByType(FieldType.SALAD,p.getFieldIndex()) && !enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
-                        actions.add(new FallBack(1));
+                        actions.add(new FallBack(0));
                         logMessage("step: 1, to hedgehog", false);
                     } else{
                         actions.add(new Skip(1));

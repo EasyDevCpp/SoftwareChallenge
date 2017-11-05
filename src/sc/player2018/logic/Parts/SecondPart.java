@@ -60,16 +60,16 @@ public class SecondPart {
                     logMessage("goto position 1 or 2",false);
                     if(p.getFieldIndex()>enemy.getFieldIndex()) actions.add(new Advance(distances[2]));
                     else if(p.getFieldIndex()<enemy.getFieldIndex()) actions.add(new Advance(distances[3]));
-                } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()) {
+                } else if(!enemy_fields[5]&&ncarrots[distances[5]]<=p.getCarrots()&&p.getLastNonSkipAction() !instanceof ExchangeCarrots) {
                     logMessage("goto carrots "+ncarrots[distances[5]]+" "+p.getCarrots(),false);
                     actions.add(new Advance(distances[5]));
                     next_turn=5;
-                } else if(!enemy_fields[1]&&ncarrots[distances[1]]<=p.getCarrots()) {
-                    logMessage("playing card",false);                
+                } else if(!enemy_fields[1]&&ncarrots[distances[1]]<=p.getCarrots()&&(p.ownsCardOfType(CardType.EAT_SALAD)||p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)||p.ownsCardOfType(CardType.HURRY_AHEAD))) {
+                    logMessage("playing card",false);
                     actions.add(new Advance(distances[1]));
                     if(p.ownsCardOfType(CardType.EAT_SALAD)) actions.add(new Card(CardType.EAT_SALAD,1));
-                    else if(p.getCarrots()<=10&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,20));
-                    else if(p.getCarrots()>=80&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,-20));
+                    else if(p.getCarrots()<50&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,20));
+                    else if(p.getCarrots()>50&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,-20));
                     else if(enemy_fields[0]&&p.ownsCardOfType(CardType.HURRY_AHEAD)) actions.add(new Card(CardType.HURRY_AHEAD,1));
                 } else {
                     logMessage("skip",false);
