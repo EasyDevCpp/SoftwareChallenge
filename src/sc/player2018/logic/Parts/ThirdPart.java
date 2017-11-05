@@ -70,23 +70,23 @@ public class ThirdPart {
                 actions.add(new Advance(toGo));
                 logMessage("advancing into goal", true);
             } else if (p.getSalads() != 0) { //radical anti-cabbage action
-                if (!enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                if (b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) > -1 && !enemyOnNextFieldType(FieldType.SALAD) && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                     actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()));
                     newTask = 1;
                     logMessage("to salad", false);
                 } else {
                     if (enemyOnNextFieldType(FieldType.SALAD)) {
-                        if (karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots() && p.ownsCardOfType(CardType.EAT_SALAD)) {
+                        if (b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots() && p.ownsCardOfType(CardType.EAT_SALAD)) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()));
                             actions.add(new Card(CardType.EAT_SALAD,1));
                             logMessage("to hare, play eat_salad", false);
-                        } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                        } else if (b.getNextFieldByType(FieldType.POSITION_2, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()));
                             logMessage("to pos2", false);
-                        } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                        } else if (b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()));
                             logMessage("to pos1", false);
-                        } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                        } else if (b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex()) - p.getFieldIndex()));
                             newTask = 2;
                             logMessage("to carrot", false);
@@ -98,21 +98,21 @@ public class ThirdPart {
                             logMessage("skip move", false);
                         }
                     } else {
-                        if (karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                        if (b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.SALAD, p.getFieldIndex()) - p.getFieldIndex()));
                             newTask = 1;
                             logMessage("to salad", false);
-                        } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots() && p.ownsCardOfType(CardType.EAT_SALAD)) {
+                        } else if (b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots() && p.ownsCardOfType(CardType.EAT_SALAD)) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()));
                             actions.add(new Card(CardType.EAT_SALAD,1));
                             logMessage("to hare, play eat_salad", false);
-                        } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                        } else if (b.getNextFieldByType(FieldType.POSITION_2, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()));
                             logMessage("to pos2", false);
-                        } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                        } else if (b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()));
                             logMessage("to pos1", false);
-                        } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                        } else if (b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT,p.getFieldIndex()) - p.getFieldIndex()));
                             if((p.getCarrots()-karottenVerbrauch[toGo]) > 10) { newTask = 3; } else { newTask = 2; }
                             logMessage("to carrot", false);
@@ -127,13 +127,13 @@ public class ThirdPart {
                     }
                 }
             } else { //radical anti-carrot action
-                if (!enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                if (b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) > -1 && !enemyOnNextFieldType(FieldType.CARROT) && karottenVerbrauch[b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                     actions.add(new Advance(b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) - p.getFieldIndex()));
                     if((p.getCarrots()-karottenVerbrauch[toGo]) > 10) { newTask = 3; } else { newTask = 2; }
                     logMessage("to carrot", false);
                 } else {
-                    if (enemyOnNextFieldType(FieldType.CARROT)) {
-                        if (karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots() && p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) {
+                    if (b.getNextFieldByType(FieldType.CARROT, p.getFieldIndex()) > -1 && enemyOnNextFieldType(FieldType.CARROT)) {
+                        if (b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots() && p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) {
                             actions.add(new Advance(b.getNextFieldByType(FieldType.HARE, p.getFieldIndex()) - p.getFieldIndex()));
                             if(p.getCarrots()-karottenVerbrauch[64-b.getNextFieldByType(FieldType.HARE, p.getFieldIndex())] > 10) {
                                 actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,20, 1));
@@ -142,10 +142,10 @@ public class ThirdPart {
                             }
                             logMessage("to hare, play take_or_drop_carrots", false);
                         } else if ((p.getCarrots()-karottenVerbrauch[toGo]) < 0) {
-                            if (karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                            if (b.getNextFieldByType(FieldType.POSITION_2, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                                 actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_2,p.getFieldIndex()) - p.getFieldIndex()));
                                 logMessage("to pos2", false);
-                            } else if (karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
+                            } else if (b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) > -1 && karottenVerbrauch[b.getNextFieldByType(FieldType.POSITION_1,p.getFieldIndex()) - p.getFieldIndex()] <= p.getCarrots()) {
                                 actions.add(new Advance(b.getNextFieldByType(FieldType.POSITION_1, p.getFieldIndex()) - p.getFieldIndex()));
                                 logMessage("to pos1", false);
                             }
