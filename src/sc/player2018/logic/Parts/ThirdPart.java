@@ -49,7 +49,7 @@ public class ThirdPart {
     }
 
     public void processAI(){
-        System.out.println("Working on third part...");
+        logMessage("third part ("+p.getPlayerColor().name()+"): ",true);
 
         Board b = gs.getBoard();
         ArrayList<Action> actions = new ArrayList<>();
@@ -59,10 +59,13 @@ public class ThirdPart {
         if (newTask != 0) {
             if (newTask == 1) {
                 actions.add(new EatSalad(0));
+                logMessage("eat salad", false);
             } else if (newTask == 2){
                 actions.add(new ExchangeCarrots(+10));
+                logMessage("eat carrots", false);
             } else if (newTask == 3){
                 actions.add(new ExchangeCarrots(-10));
+                logMessage("remove carrots", false);
             }
             newTask = 0;
         } else {

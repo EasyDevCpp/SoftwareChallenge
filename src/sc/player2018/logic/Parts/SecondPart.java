@@ -39,7 +39,7 @@ public class SecondPart {
         enemy_fields[4]=enemyOnNextFieldType(FieldType.SALAD);
         enemy_fields[5]=enemyOnNextFieldType(FieldType.CARROT);
         actions.clear();
-        logMessage("second part ("+p.getPlayerColor().name()+"): ",false);
+        logMessage("second part ("+p.getPlayerColor().name()+"): ",true);
         if(next_turn!=0) {
             if(next_turn==4) {
                 logMessage("eat salad",false);
