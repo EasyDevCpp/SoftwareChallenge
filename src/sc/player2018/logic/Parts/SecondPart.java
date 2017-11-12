@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 public class SecondPart {
-    private int[] ncarrots={1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210,231,253,276,300,325,351,378,406,435,465,496,528,561,595,630,666,703,741,780,820,861,903,946,990};
+    private int[] ncarrots={0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210,231,253,276,300,325,351,378,406,435,465,496,528,561,595,630,666,703,741,780,820,861,903,946,990};
     private GameState gs;
     private Player p;
     private Player enemy;
@@ -46,14 +46,14 @@ public class SecondPart {
                 actions.add(new EatSalad(0));
             } else if(next_turn==5) {
                 logMessage("exchange carrots: +10 or -10",false);
-                if(p.getCarrots()<90) actions.add(new ExchangeCarrots(10,0));                    
+                if(p.getCarrots()<90) actions.add(new ExchangeCarrots(10,0));
                 else actions.add(new ExchangeCarrots(-10,0));
             }
             next_turn=0;
         } else {
             if(p.getCarrots()>10) {
                 if(!enemy_fields[4]&&ncarrots[distances[4]]<=p.getCarrots()) {
-                    logMessage("goto salad",false);                
+                    logMessage("goto salad",false);
                     actions.add(new Advance(distances[4]));
                     next_turn=4;
                 } else if((!enemy_fields[2]&&ncarrots[distances[2]]<=p.getCarrots())&&(!enemy_fields[3]&&ncarrots[distances[3]]<=p.getCarrots())) {
@@ -68,8 +68,8 @@ public class SecondPart {
                     logMessage("playing card",false);
                     actions.add(new Advance(distances[1], 0));
                     if(p.ownsCardOfType(CardType.EAT_SALAD)) actions.add(new Card(CardType.EAT_SALAD,1));
-                    else if(p.getCarrots()<50&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,1));
-                    else if(p.getCarrots()>50&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS,1));
+                    else if(p.getCarrots()<50&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS, 20,1));
+                    else if(p.getCarrots()>50&&p.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20,1));
                     else if(enemy_fields[0]&&p.ownsCardOfType(CardType.HURRY_AHEAD)) actions.add(new Card(CardType.HURRY_AHEAD,1));
                 } else {
                     logMessage("skip",false);
@@ -78,11 +78,10 @@ public class SecondPart {
             } else {
                 if(b.getPreviousFieldByType(FieldType.CARROT,p.getFieldIndex())!=enemy.getFieldIndex()) {
                     logMessage("fallback",false);
-                    actions.add(new FallBack(b.getPreviousFieldByType(FieldType.CARROT,p.getFieldIndex())-p.getFieldIndex()));
-                    next_turn=5;
+                    actions.add(new FallBack(0));
                 } else {
                     logMessage("skip",false);
-                    actions.add(new Skip(1));                    
+                    actions.add(new Skip(1));
                 }
             }
         }

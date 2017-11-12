@@ -64,6 +64,7 @@ public class Logic implements IGameHandler {
             second.update(gs,p,enemy);
             second.processAI();
             sendAction(second.getMove());
+
         } else if(p.getFieldIndex()<=65) {
             third.update(gs,p,enemy);
             third.processAI();
