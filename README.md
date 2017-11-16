@@ -1,4 +1,4 @@
-# SoftwareChallange
+# SoftwareChallenge
 
 ## Active Branches:
 
