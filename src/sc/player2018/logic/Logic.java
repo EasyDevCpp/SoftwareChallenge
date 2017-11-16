@@ -14,14 +14,9 @@ import java.io.*;
 
 public class Logic implements IGameHandler {
     private Starter client;
-    private GameState gs;
-    private Player p;
-    private Player enemy;
-
-    private FirstPart first;
-    private SecondPart second;
-    private ThirdPart third;
     private BufferedWriter fout;
+
+    private FLSLogic flsLogic;
 
     public Logic(Starter client) {
         System.out.println("Starte");
@@ -38,38 +33,23 @@ public class Logic implements IGameHandler {
             e.printStackTrace();
         }
 
-        first=new FirstPart(fout);
-        second=new SecondPart(fout);
-        third=new ThirdPart(fout);
+        flsLogic = new FLSLogic();
     }
 
     @Override
     public void onUpdate(Player player, Player otherPlayer) {
-        p = player;
-        enemy = otherPlayer;
+        flsLogic.onUpdate(player, otherPlayer);
     }
 
     @Override
     public void onUpdate(GameState gameState) {
-        gs = gameState;
+        flsLogic.onUpdate(gameState);
     }
 
     @Override
     public void onRequestAction() {
-        if(p.getFieldIndex()<23) {
-            first.update(gs,p,enemy);
-            first.processAI();
-            sendAction(first.getMove());
-        } else if(p.getFieldIndex()<43) {
-            second.update(gs,p,enemy);
-            second.processAI();
-            sendAction(second.getMove());
-
-        } else if(p.getFieldIndex()<=65) {
-            third.update(gs,p,enemy);
-            third.processAI();
-            sendAction(third.getMove());
-        }
+        flsLogic.update();
+        sendAction(flsLogic.getMove());
     }
 
     @Override
