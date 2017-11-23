@@ -119,7 +119,7 @@ public class FLSLogic {
                 actions.add(a);   
             }
         }
-        for(Action a: actions) 
+        for(Action a: actions) {
             if(a instanceof Advance) {
                 advance++;
             } else if(a instanceof Card) {
