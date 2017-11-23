@@ -7,6 +7,7 @@ import sc.plugin2018.util.GameRuleLogic;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.lang.Math.*;
 
 public class FLSLogic {
     protected int newTask = 0; //0 = Nothing, 1 = Salad, 2 = Carrot+, 3 = Carrot-
@@ -27,15 +28,15 @@ public class FLSLogic {
         logMessage("init flslogic", true);
     }
     public void onUpdate(Player p, Player e){
-        player = p;
-        enemy = e;
+        player=p;
+        enemy=e;
     }
     public void onUpdate(GameState gameState){
-        gs = gameState;
+        gs=gameState;
     }
     public void update() {
         if(newTask != 0){
-            if(newTask == 1 || (GameRuleLogic.isValidToEat(gs) && gs.fieldOfCurrentPlayer() == FieldType.SALAD)){
+            if(newTask == 1 || (GameRuleLogic.isValidToEat(gs) && gs.fieldOfCurrentPlayer() == FieldType.SALAD)) {
                 actions.add(new EatSalad(0));
                 logMessage("eat salad", false);
             } else if(newTask == 2){
@@ -82,6 +83,78 @@ public class FLSLogic {
     protected int getDistance(FieldType f){
         return gs.getNextFieldByType(f, player.getFieldIndex()) - player.getFieldIndex();
     }
+    //@Untested area
+    /*
+     * method: sigmoid(double)
+     * return: double
+     * desc:   calculating 1/1+e^-value -> 1/2*(1+tanh(value/2))
+     * use to: calculate the influence of a specific value
+     * 
+     * author: Robin Krause
+     */
+    private double sigmoid(double value) {
+        return 0.5*(1+Math.tanh(value/2));
+    }
+    /*
+     * method: getMostEfficientAction()
+     * return: Action
+     * desc:   returns the most significant Action
+     * use to: do more efficient turns
+     * 
+     * author: Robin Krause
+     */
+    protected Action getMostEfficientAction() {
+        int average=0;
+        int max=0; //not neccesary but shorter than *.size()
+        int advance=0;
+        int card=0;
+        int exchange=0;
+        int fallback=0;
+        int eatsalad=0;
+        int skip=0;
+
+        for(Move m: gs.getPossibleMoves()) {
+            for(Action a: m.actions) {
+                if(a instanceof Advance) {
+                    advance++;
+                } else if(a instanceof Card) {
+                    card++;
+                } else if(a instanceof ExchangeCarrots) {
+                    exchange++;
+                } else if(a instanceof FallBack) {
+                    fallback++;
+                } else if(a instanceof EatSalad) {
+                    eatsalad++;
+                } else if(a instanceof Skip) {
+                    skip++;
+                }
+                max++;
+            }
+        }
+        for(Move m: gs.getPossibleMoves()) {
+            for(Action a: m.actions) {
+                if(a instanceof Advance) {
+                    average+=(int)max/advance;
+                } else if(a instanceof Card) {
+                    average+=(int)max/card;
+                } else if(a instanceof ExchangeCarrots) {
+                    average+=(int)max/exchange;
+                } else if(a instanceof FallBack) {
+                    average+=(int)max/fallback;
+                } else if(a instanceof EatSalad) {
+                    average+=(int)max/eatsalad;
+                } else if(a instanceof Skip) {
+                    average+=(int)max/skip;
+                }
+            }
+        }
+        if(sigmoid(average/max)>0.6) {
+            return gs.getPossibleMoves().actions.get((int)average/max);
+        } else {
+            return null; //No most efficient action available!
+        }
+    }
+    //@end
     public Move getMove(){
         return m;
     }
