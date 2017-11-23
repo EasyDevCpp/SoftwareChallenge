@@ -112,44 +112,46 @@ public class FLSLogic {
         int fallback=0;
         int eatsalad=0;
         int skip=0;
-
+        ArrayList<Action> actions=new ArrayList<>();
+        
         for(Move m: gs.getPossibleMoves()) {
             for(Action a: m.actions) {
-                if(a instanceof Advance) {
-                    advance++;
-                } else if(a instanceof Card) {
-                    card++;
-                } else if(a instanceof ExchangeCarrots) {
-                    exchange++;
-                } else if(a instanceof FallBack) {
-                    fallback++;
-                } else if(a instanceof EatSalad) {
-                    eatsalad++;
-                } else if(a instanceof Skip) {
-                    skip++;
-                }
-                max++;
+                actions.add(a);   
             }
         }
-        for(Move m: gs.getPossibleMoves()) {
-            for(Action a: m.actions) {
-                if(a instanceof Advance) {
-                    average+=(int)max/advance;
-                } else if(a instanceof Card) {
-                    average+=(int)max/card;
-                } else if(a instanceof ExchangeCarrots) {
-                    average+=(int)max/exchange;
-                } else if(a instanceof FallBack) {
-                    average+=(int)max/fallback;
-                } else if(a instanceof EatSalad) {
-                    average+=(int)max/eatsalad;
-                } else if(a instanceof Skip) {
-                    average+=(int)max/skip;
-                }
+        for(Action a: actions) 
+            if(a instanceof Advance) {
+                advance++;
+            } else if(a instanceof Card) {
+                card++;
+            } else if(a instanceof ExchangeCarrots) {
+                exchange++;
+            } else if(a instanceof FallBack) {
+                fallback++;
+            } else if(a instanceof EatSalad) {
+                eatsalad++;
+            } else if(a instanceof Skip) {
+                skip++;
+            }
+            max++;
+        }
+        for(Action a: actions) {
+            if(a instanceof Advance) {
+                average+=(int)max/advance;
+            } else if(a instanceof Card) {
+                average+=(int)max/card;
+            } else if(a instanceof ExchangeCarrots) {
+                average+=(int)max/exchange;
+            } else if(a instanceof FallBack) {
+                average+=(int)max/fallback;
+            } else if(a instanceof EatSalad) {
+                average+=(int)max/eatsalad;
+            } else if(a instanceof Skip) {
+                average+=(int)max/skip;
             }
         }
         if(sigmoid(average/max)>0.6) {
-            return gs.getPossibleMoves().actions.get((int)average/max);
+            return actions.get((int)average/max);
         } else {
             return null; //No most efficient action available!
         }
