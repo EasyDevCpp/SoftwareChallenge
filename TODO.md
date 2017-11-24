@@ -5,7 +5,7 @@
 - [ ] Implement ExtendedLogic class
 - [x] Implement Part abstract class
 - [x] Implement FLSLogic
-- [ ] get back to a working client
+- [x] get back to a working client
 - [ ] Fix some errors
 
 ## Enhancements:
