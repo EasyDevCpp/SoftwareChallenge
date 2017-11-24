@@ -1,7 +1,6 @@
 package sc.player2018.logic.Parts;
 
 import sc.plugin2018.*;
-import sc.plugin2018.util.GameRuleLogic;
 
 import java.util.ArrayList;
 
@@ -14,23 +13,25 @@ public abstract class Part {
     private Player player;
     private Player enemy;
 
-    public Part(){}
-    public Part(boolean b){
+    public Part(){
         actions = new ArrayList<>();
     }
 
     public void processAI(){}
 
     public void update(GameState gs){
-        actions.clear();
         this.gs = gs;
         player = gs.getCurrentPlayer();
         enemy = gs.getOtherPlayer();
+    }
 
-        if(newTask != 0 || (GameRuleLogic.isValidToEat(gs) && gs.fieldOfCurrentPlayer() == FieldType.SALAD)) {
-            if (newTask == 1 || (GameRuleLogic.isValidToEat(gs) && gs.fieldOfCurrentPlayer() == FieldType.SALAD)) {
+    public void play(){
+        actions.clear();
+
+        if(newTask != 0) {
+            if (newTask == 1) {
                 actions.add(new EatSalad(0));
-            } else if (newTask == 2 || gs.getNextFieldByType(FieldType.CARROT, player.getFieldIndex()) == 0){
+            } else if (newTask == 2){
                 actions.add(new ExchangeCarrots(+10));
             } else if (newTask == 3){
                 actions.add(new ExchangeCarrots(-10));
@@ -39,11 +40,16 @@ public abstract class Part {
         } else{
             processAI();
         }
+
+        m = new Move(actions);
+        m.orderActions();
     }
 
+    @Deprecated
     public boolean enemyOnNextFieldType(FieldType type){
         return gs.getBoard().getNextFieldByType(type, player.getFieldIndex()) == enemy.getFieldIndex();
     }
+    @Deprecated
     public boolean enemyOnPreviousFieldType(FieldType type){
         return gs.getBoard().getPreviousFieldByType(type, player.getFieldIndex()) == enemy.getFieldIndex();
     }
@@ -56,10 +62,10 @@ public abstract class Part {
         return false;
     }
 
-    public Move getM() {
+    public Move getMove() {
         return m;
     }
-    public void setM(Move m) {
+    public void setMove(Move m) {
         this.m = m;
     }
     public ArrayList<Action> getActions() {
