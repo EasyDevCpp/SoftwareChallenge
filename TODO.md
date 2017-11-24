@@ -3,8 +3,8 @@
 ## Important:
 - [ ] Implement enhanced Log-Message
 - [ ] Implement ExtendedLogic class
-- [ ] Implement Part abstract class
-- [ ] Implement FLSLogic
+- [x] Implement Part abstract class
+- [x] Implement FLSLogic
 - [ ] get back to a working client
 - [ ] Fix some errors
 
