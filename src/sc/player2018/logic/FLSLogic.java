@@ -8,36 +8,51 @@ import sc.plugin2018.GameState;
 import sc.plugin2018.Move;
 
 public class FLSLogic {
-    private Part first;
-    private Part second;
-    private Part third;
+    private Part[] parts;
+    private Log log;
     private GameState gameState;
     private Move m;
+    private boolean hasPlayed;
     
     public FLSLogic(){
-        first = new FirstPart();
-        second = new SecondPart();
-        third = new ThirdPart();
+        parts = new Part[3];
+        parts[0] = new FirstPart();
+        parts[1] = new SecondPart();
+        parts[2] = new ThirdPart();
+        log = new Log();
     }
     
     public void update(GameState gs){
-        first.update(gs);
-        second.update(gs);
-        third.update(gs);
+        parts[0].update(gs);
+        parts[1].update(gs);
+        parts[2].update(gs);
         gameState = gs;
+
+        if(gs.getCurrentPlayer().getFieldIndex() == 0 && gs.getOtherPlayer().getFieldIndex() == 0){
+            log.printFields(gs.getBoard());
+        } else if(hasPlayed){
+            log.logMove(gs, m);
+            hasPlayed = false;
+        }/* else{
+            log.logEnemy(gameState);
+        }*/
     }
     
     public void play(){
         if(gameState.getCurrentPlayer().getFieldIndex()<23) {
-            first.play();
-            m = first.getMove();
+            parts[0].play();
+            m = parts[0].getMove();
+            log.setLastPlayedPart(parts[0]);
         } else if(gameState.getCurrentPlayer().getFieldIndex()<43) {
-            second.play();
-            m = second.getMove();
+            parts[1].play();
+            m = parts[1].getMove();
+            log.setLastPlayedPart(parts[1]);
         } else if(gameState.getCurrentPlayer().getFieldIndex()<=65) {
-            third.play();
-            m = third.getMove();
+            parts[2].play();
+            m = parts[2].getMove();
+            log.setLastPlayedPart(parts[2]);
         }
+        hasPlayed = true;
     }
 
     public Move getMove() {
