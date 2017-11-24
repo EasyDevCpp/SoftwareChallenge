@@ -58,7 +58,7 @@ public class FirstPart extends Part{
             } else{
                 if(!enemyOnNextFieldType(FieldType.SALAD) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
                     super.getActions().add(new Advance(b.getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex())); //go to second part
-                    setNewTask(3);
+                    setNewTask(1);
                     step = 2;
                 } else if(b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) < b.getNextFieldByType(FieldType.SALAD,super.getPlayer().getFieldIndex()) && !enemyOnNextFieldType(FieldType.CARROT) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
                     super.getActions().add(new Advance(b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
