@@ -13,7 +13,7 @@ public class FLSLogic {
     private GameState gameState;
     private Move m;
     private boolean hasPlayed;
-    
+
     public FLSLogic(){
         parts = new Part[3];
         parts[0] = new FirstPart();
@@ -21,7 +21,7 @@ public class FLSLogic {
         parts[2] = new ThirdPart();
         log = new Log();
     }
-    
+
     public void update(GameState gs){
         parts[0].update(gs);
         parts[1].update(gs);
@@ -30,6 +30,8 @@ public class FLSLogic {
 
         if(gs.getCurrentPlayer().getFieldIndex() == 0 && gs.getOtherPlayer().getFieldIndex() == 0){
             log.printFields(gs.getBoard());
+        } else if(gs.getCurrentPlayer().getFieldIndex() == 64 || gs.getOtherPlayer().getFieldIndex() == 64){
+            log.onGameEnd();
         } else if(hasPlayed){
             log.logMove(gs, m);
             hasPlayed = false;

@@ -3,15 +3,9 @@ package sc.player2018.logic;
 import sc.player2018.logic.Parts.FirstPart;
 import sc.player2018.logic.Parts.Part;
 import sc.player2018.logic.Parts.SecondPart;
-import sc.plugin2018.Advance;
-import sc.plugin2018.Board;
-import sc.plugin2018.GameState;
-import sc.plugin2018.Move;
+import sc.plugin2018.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Log {
     private BufferedWriter out;
@@ -33,11 +27,28 @@ public class Log {
         if(lastPlayedPart instanceof FirstPart) partNumber = "firstpart";
         else if(lastPlayedPart instanceof SecondPart) partNumber = "secondpart";
         else partNumber = "thirdpart";
+        partNumber += "(" + gameState.getOtherPlayer().getPlayerColor().name() + ")";
 
         String movedescription = "";
-        if(move.actions.get(0) instanceof Advance){
-            if(oldGS == null) movedescription = "advance " + 0 + " " + gameState.getOtherPlayer().getFieldIndex();
-            else movedescription = "advance " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex();
+        for(Action a : move.actions) {
+            if (a instanceof Advance) {
+                if(gameState.getOtherPlayer().getFieldIndex() != 65){
+                    if (oldGS == null) movedescription += "advance " + 0 + " " + gameState.getOtherPlayer().getFieldIndex() + " " + 68 + " " + gameState.getOtherPlayer().getCarrots();
+                    else movedescription += "advance " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex() + " " + oldGS.getOtherPlayer().getCarrots() + " " + gameState.getOtherPlayer().getCarrots();
+                } else{
+                    movedescription += "goal " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex();
+                }
+            } else if (a instanceof EatSalad) {
+                movedescription += "eatsalad " + oldGS.getOtherPlayer().getSalads() + " " + gameState.getOtherPlayer().getSalads();
+            } else if (a instanceof ExchangeCarrots) {
+                movedescription += "exchangecarrots " + oldGS.getOtherPlayer().getCarrots() + " " + gameState.getOtherPlayer().getCarrots();
+            } else if (a instanceof FallBack){
+                movedescription += "fallback " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex() + " " + oldGS.getOtherPlayer().getCarrots() + " " + gameState.getOtherPlayer().getCarrots();
+            } else if(a instanceof Card){
+                if(oldGS.getOtherPlayer().getCarrots() != gameState.getOtherPlayer().getCarrots()) movedescription += "|cardcarrot " + oldGS.getOtherPlayer().getCarrots() + " " + gameState.getOtherPlayer().getCarrots();
+                else if(oldGS.getOtherPlayer().getSalads() != gameState.getOtherPlayer().getSalads()) movedescription += "|cardsalad " + oldGS.getOtherPlayer().getSalads() + " " + gameState.getOtherPlayer().getSalads();
+                else movedescription += "|cardmove " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex();
+            }
         }
 
         write(partNumber + " " + movedescription);
@@ -45,8 +56,8 @@ public class Log {
     }
 
     public void logEnemy(GameState gameState){
-        if(oldGS == null) write("enemy " + 0 + " " + gameState.getOtherPlayer().getFieldIndex());
-        else write("enemy " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex());
+        if(oldGS == null) write("enemy " + 0 + " " + gameState.getCurrentPlayer().getFieldIndex());
+        else write("enemy " + oldGS.getCurrentPlayer().getFieldIndex() + " " + gameState.getCurrentPlayer().getFieldIndex());
     }
 
     public void printFields(Board b){
@@ -55,6 +66,10 @@ public class Log {
             msg += b.getTypeAt(i).name() + "|";
         }
         write(msg);
+    }
+
+    public void onGameEnd(){
+        write("END");
     }
 
     private void write(String msg){
