@@ -1,5 +1,4 @@
 package sc.player2018.logic;
-
 import sc.player2018.logic.Parts.FirstPart;
 import sc.player2018.logic.Parts.Part;
 import sc.player2018.logic.Parts.SecondPart;

@@ -1,5 +1,4 @@
 package sc.player2018.logic.Parts;
-
 import sc.plugin2018.*;
 
 public class FirstPart extends Part{

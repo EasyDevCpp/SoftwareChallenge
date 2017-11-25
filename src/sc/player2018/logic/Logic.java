@@ -1,6 +1,9 @@
 package sc.player2018.logic;
 
 import sc.player2018.Starter;
+import sc.player2018.logic.Parts.FirstPart;
+import sc.player2018.logic.Parts.SecondPart;
+import sc.player2018.logic.Parts.ThirdPart;
 import sc.plugin2018.GameState;
 import sc.plugin2018.IGameHandler;
 import sc.plugin2018.Move;
