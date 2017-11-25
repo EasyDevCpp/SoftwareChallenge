@@ -10,46 +10,30 @@ import sc.plugin2018.Move;
 import sc.plugin2018.Player;
 import sc.shared.GameResult;
 import sc.shared.PlayerColor;
-import java.io.*;
 
 public class Logic implements IGameHandler {
     private Starter client;
-    private BufferedWriter fout;
-
-    private FLSLogic flsLogic;
+    private FLSLogic fls;
 
     public Logic(Starter client) {
-        System.out.println("Starte");
         this.client = client;
-
-        try {
-            String file = Logic.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();            //erzeugt log-Datei am Speicherort der .jar
-            file = file.substring(0, file.lastIndexOf("/")) + "/log.txt";
-            fout = new BufferedWriter(new FileWriter(new File(file), true));
-
-            fout.write("\n\n*********************\n\tnew match\n*********************");
-            fout.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        flsLogic = new FLSLogic();
+        fls = new FLSLogic();
     }
 
     @Override
     public void onUpdate(Player player, Player otherPlayer) {
-        flsLogic.onUpdate(player, otherPlayer);
+        //do nothing, becuase in gameState
     }
 
     @Override
     public void onUpdate(GameState gameState) {
-        flsLogic.onUpdate(gameState);
+        fls.update(gameState);
     }
 
     @Override
     public void onRequestAction() {
-        flsLogic.update();
-        sendAction(flsLogic.getMove());
+        fls.play();
+        sendAction(fls.getMove());
     }
 
     @Override

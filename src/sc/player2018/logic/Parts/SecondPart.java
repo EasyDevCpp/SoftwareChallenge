@@ -1,68 +1,52 @@
 package sc.player2018.logic.Parts;
-
-import sc.player2018.logic.FLSLogic;
 import sc.plugin2018.*;
 
-public class SecondPart extends FLSLogic {
+public class SecondPart extends Part{
     private int distances[]=new int[6];
     private boolean enemy_fields[]=new boolean[6];
+
+    @Override
     public void processAI() {
-        if(super.getMostEfficientAction()==null) {
-            Board b=gs.getBoard();
-            distances[0]=b.getNextFieldByType(FieldType.HEDGEHOG,player.getFieldIndex())-player.getFieldIndex();
-            distances[1]=b.getNextFieldByType(FieldType.HARE,player.getFieldIndex())-player.getFieldIndex();
-            distances[2]=b.getNextFieldByType(FieldType.POSITION_1,player.getFieldIndex())-player.getFieldIndex();
-            distances[3]=b.getNextFieldByType(FieldType.POSITION_2,player.getFieldIndex())-player.getFieldIndex();
-            distances[4]=b.getNextFieldByType(FieldType.SALAD,player.getFieldIndex())-player.getFieldIndex();
-            distances[5]=b.getNextFieldByType(FieldType.CARROT,player.getFieldIndex())-player.getFieldIndex();
-            enemy_fields[0]=enemyOnNextFieldType(FieldType.HEDGEHOG);
-            enemy_fields[1]=enemyOnNextFieldType(FieldType.HARE);
-            enemy_fields[2]=enemyOnNextFieldType(FieldType.POSITION_1);
-            enemy_fields[3]=enemyOnNextFieldType(FieldType.POSITION_2);
-            enemy_fields[4]=enemyOnNextFieldType(FieldType.SALAD);
-            enemy_fields[5]=enemyOnNextFieldType(FieldType.CARROT);
-            actions.clear();
-            logMessage("second part ("+player.getPlayerColor().name()+"): ",true);
-            if (player.getCarrots() > 10) {
-                if (!enemy_fields[4] && karottenVerbrauch[distances[4]] <= player.getCarrots()) {
-                    logMessage("goto salad", false);
-                    actions.add(new Advance(distances[4]));
-                    newTask = 1;
-                } else if ((!enemy_fields[2] && karottenVerbrauch[distances[2]] <= player.getCarrots()) && (!enemy_fields[3] && karottenVerbrauch[distances[3]] <= player.getCarrots())) {
-                    logMessage("goto position 1 or 2", false);
-                    if (player.getFieldIndex() > enemy.getFieldIndex()) actions.add(new Advance(distances[2]));
-                    else if (player.getFieldIndex() < enemy.getFieldIndex()) actions.add(new Advance(distances[3]));
-                } else if (!enemy_fields[5] && karottenVerbrauch[distances[5]] <= player.getCarrots() && !(player.getLastNonSkipAction() instanceof ExchangeCarrots)) {
-                    logMessage("goto carrots " + karottenVerbrauch[distances[5]] + " " + player.getCarrots(), false);
-                    actions.add(new Advance(distances[5]));
-                    if (player.getCarrots() < 90) newTask = 2;
-                    else newTask = 3;
-                } else if (!enemy_fields[1] && karottenVerbrauch[distances[1]] <= player.getCarrots() && (player.ownsCardOfType(CardType.EAT_SALAD) || player.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS) || player.ownsCardOfType(CardType.HURRY_AHEAD))) {
-                    logMessage("playing card", false);
-                    actions.add(new Advance(distances[1], 0));
-                    if (player.ownsCardOfType(CardType.EAT_SALAD)) actions.add(new Card(CardType.EAT_SALAD, 1));
-                    else if (player.getCarrots() < 50 && player.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS, 20, 1));
-                    else if (player.getCarrots() > 50 && player.ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) actions.add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20, 1));
-                    else if (enemy_fields[0] && player.ownsCardOfType(CardType.HURRY_AHEAD)) actions.add(new Card(CardType.HURRY_AHEAD, 1));
-                } else {
-                    logMessage("skip", false);
-                    actions.add(new Skip(1));
-                }
+        Board b=super.getGameState().getBoard();
+        distances[0]=b.getNextFieldByType(FieldType.HEDGEHOG,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
+        distances[1]=b.getNextFieldByType(FieldType.HARE,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
+        distances[2]=b.getNextFieldByType(FieldType.POSITION_1,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
+        distances[3]=b.getNextFieldByType(FieldType.POSITION_2,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
+        distances[4]=b.getNextFieldByType(FieldType.SALAD,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
+        distances[5]=b.getNextFieldByType(FieldType.CARROT,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
+        enemy_fields[0]=enemyOnNextFieldType(FieldType.HEDGEHOG);
+        enemy_fields[1]=enemyOnNextFieldType(FieldType.HARE);
+        enemy_fields[2]=enemyOnNextFieldType(FieldType.POSITION_1);
+        enemy_fields[3]=enemyOnNextFieldType(FieldType.POSITION_2);
+        enemy_fields[4]=enemyOnNextFieldType(FieldType.SALAD);
+        enemy_fields[5]=enemyOnNextFieldType(FieldType.CARROT);
+
+        if(super.getPlayer().getCarrots()>10) {
+            if(!enemy_fields[4]&&super.getKarrotCosts()[distances[4]]<=super.getPlayer().getCarrots()) {
+                super.getActions().add(new Advance(distances[4]));
+                super.setNewTask(1);
+            } else if((!enemy_fields[2]&&super.getKarrotCosts()[distances[2]]<=super.getPlayer().getCarrots())&&(!enemy_fields[3]&&super.getKarrotCosts()[distances[3]]<=super.getPlayer().getCarrots())) {
+                if(super.getPlayer().getFieldIndex()>super.getEnemy().getFieldIndex()) super.getActions().add(new Advance(distances[2]));
+                else if(super.getPlayer().getFieldIndex()<super.getEnemy().getFieldIndex()) super.getActions().add(new Advance(distances[3]));
+            } else if(!enemy_fields[5]&&super.getKarrotCosts()[distances[5]]<=super.getPlayer().getCarrots()&&!(super.getPlayer().getLastNonSkipAction() instanceof ExchangeCarrots)) {
+                super.getActions().add(new Advance(distances[5]));
+                if(super.getPlayer().getCarrots()<90) super.setNewTask(2);
+                else super.setNewTask(3);
+            } else if(!enemy_fields[1]&&super.getKarrotCosts()[distances[1]]<=super.getPlayer().getCarrots()&&(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD)||super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)||super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD))) {
+                super.getActions().add(new Advance(distances[1], 0));
+                if(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD)) super.getActions().add(new Card(CardType.EAT_SALAD,1));
+                else if(super.getPlayer().getCarrots()<50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, 20,1));
+                else if(super.getPlayer().getCarrots()>50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20,1));
+                else if(enemy_fields[0]&&super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD)) super.getActions().add(new Card(CardType.HURRY_AHEAD,1));
             } else {
-                if (b.getPreviousFieldByType(FieldType.CARROT, player.getFieldIndex()) != enemy.getFieldIndex()) {
-                    logMessage("fallback", false);
-                    actions.add(new FallBack(0));
-                } else {
-                    logMessage("skip", false);
-                    actions.add(new Skip(1));
-                }
+                super.getActions().add(new Skip(1));
             }
         } else {
-            actions.add(super.getMostEfficientAction());
+            if(b.getPreviousFieldByType(FieldType.CARROT,super.getPlayer().getFieldIndex())!=super.getEnemy().getFieldIndex()) {
+                super.getActions().add(new FallBack(0));
+            } else {
+                super.getActions().add(new Skip(1));
+            }
         }
-        m = new Move(actions);
-        m.orderActions();
-        actions.clear();
     }
-
 }
