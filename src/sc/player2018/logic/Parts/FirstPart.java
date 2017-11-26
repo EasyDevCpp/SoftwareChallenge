@@ -59,10 +59,18 @@ public class FirstPart extends Part{
                     super.getActions().add(new Advance(b.getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex())); //go to second part
                     setNewTask(1);
                     step = 2;
-                } else if(b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) < b.getNextFieldByType(FieldType.SALAD,super.getPlayer().getFieldIndex()) && !enemyOnNextFieldType(FieldType.CARROT) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+                } else if(!enemyOnNextFieldType(FieldType.CARROT) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
                     super.getActions().add(new Advance(b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
                     setNewTask(2);
-                } else if(b.getPreviousFieldByType(FieldType.HEDGEHOG, super.getPlayer().getFieldIndex()) < b.getNextFieldByType(FieldType.SALAD,super.getPlayer().getFieldIndex()) && !enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
+                } else if(super.getKarrotCosts()[b.getNextFieldByType(FieldType.POSITION_2, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+                    super.getActions().add(new Advance(b.getNextFieldByType(FieldType.POSITION_2, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
+                } else if(!enemyOnNextFieldType(FieldType.HARE) && super.getPlayer().getCards().contains(CardType.EAT_SALAD) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.HARE, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+                    super.getActions().add(new Advance(b.getNextFieldByType(FieldType.HARE, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
+                    super.getActions().add(new Card(CardType.EAT_SALAD, 1));
+                } else if(!enemyOnNextFieldType(FieldType.HARE) && super.getPlayer().getCards().contains(CardType.HURRY_AHEAD) && super.getPlayer().getFieldIndex() < super.getEnemy().getFieldIndex() && super.getKarrotCosts()[b.getNextFieldByType(FieldType.HARE, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+                    super.getActions().add(new Advance(b.getNextFieldByType(FieldType.HARE, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
+                    super.getActions().add(new Card(CardType.EAT_SALAD, 1));
+                } else if(b.getPreviousFieldByType(FieldType.HEDGEHOG, super.getPlayer().getFieldIndex()) > -1 && b.getPreviousFieldByType(FieldType.HEDGEHOG, super.getPlayer().getFieldIndex()) < b.getNextFieldByType(FieldType.SALAD,super.getPlayer().getFieldIndex()) && !enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
                     super.getActions().add(new FallBack(0));
                 } else{
                     super.getActions().add(new Skip(1));
