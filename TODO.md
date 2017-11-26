@@ -2,7 +2,7 @@
 
 ## Important:
 - [x] Implement enhanced Log-Message
-- [ ] Implement ExtendedLogic class
+- [x] Implement ExtendedLogic class
 - [x] Implement Part abstract class
 - [x] Implement FLSLogic
 - [x] get back to a working client
