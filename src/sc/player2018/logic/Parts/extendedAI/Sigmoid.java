@@ -1,7 +1,11 @@
 package sc.player2018.logic.Parts.extendedAI;
-import java.lang.Math;
+import sc.player2018.logic.Parts.Part;
+import sc.plugin2018.*;
 
-public class Sigmoid {
+import java.lang.Math;
+import java.util.ArrayList;
+
+public class Sigmoid extends Part{
     /*
      * method: _sigmoid(double)
      * return: double
@@ -32,7 +36,7 @@ public class Sigmoid {
         int skip=0;
         ArrayList<Action> actions=new ArrayList<>();
         
-        for(Move m: gs.getPossibleMoves()) {
+        for(Move m: super.getGameState().getPossibleMoves()) {
             for(Action a: m.actions) {
                 actions.add(a);   
             }
