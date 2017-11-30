@@ -1,6 +1,6 @@
 package sc.player2018.logic.Parts;
+import sc.player2018.logic.Parts.extendedAI.Sigmoid;
 import sc.plugin2018.*;
-import sc.player2018.logic.Parts.extendedAI;
 
 public class SecondPart extends Part{
     private int distances[]=new int[6];
@@ -8,8 +8,8 @@ public class SecondPart extends Part{
 
     @Override
     public void processAI() {
-        if(Sigmoid.getMostEfficientAction()!=null) {
-            super.getActions().add(Sigmoid.getMostEfficientAction());
+        if(Sigmoid.getMostEfficientAction(super.getGameState())!=null) {
+            super.getActions().add(Sigmoid.getMostEfficientAction(super.getGameState()));
         } else {
             Board b=super.getGameState().getBoard();
             distances[0]=b.getNextFieldByType(FieldType.HEDGEHOG,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();

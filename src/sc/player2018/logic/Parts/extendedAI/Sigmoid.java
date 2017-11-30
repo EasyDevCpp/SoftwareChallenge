@@ -27,7 +27,7 @@ public final class Sigmoid {
      * 
      * author: Robin Krause
      */
-    public static Action getMostEfficientAction() {
+    public static Action getMostEfficientAction(GameState gameState) {
         int average=0;
         int max=0;
         int advance=0;
@@ -38,7 +38,7 @@ public final class Sigmoid {
         int skip=0;
         ArrayList<Action> actions=new ArrayList<>();
         
-        for(Move m: super.getGameState().getPossibleMoves()) {
+        for(Move m: gameState.getPossibleMoves()) {
             for(Action a: m.actions) {
                 actions.add(a);   
             }
