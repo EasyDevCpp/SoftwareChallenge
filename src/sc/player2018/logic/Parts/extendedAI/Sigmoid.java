@@ -1,11 +1,13 @@
 package sc.player2018.logic.Parts.extendedAI;
-import sc.player2018.logic.Parts.Part;
 import sc.plugin2018.*;
 
 import java.lang.Math;
 import java.util.ArrayList;
 
-public class Sigmoid extends Part{
+public final class Sigmoid {
+    private Sigmoid() {
+
+    }
     /*
      * method: _sigmoid(double)
      * return: double
@@ -14,7 +16,7 @@ public class Sigmoid extends Part{
      * 
      * author: Robin Krause
      */
-    private double _sigmoid(double value) {
+    private static double _sigmoid(double value) {
         return 0.5*(1+Math.tanh(value/2));
     }
     /*
@@ -25,7 +27,7 @@ public class Sigmoid extends Part{
      * 
      * author: Robin Krause
      */
-    public Action getMostEfficientAction() {
+    public static Action getMostEfficientAction(GameState gameState) {
         int average=0;
         int max=0;
         int advance=0;
@@ -36,7 +38,7 @@ public class Sigmoid extends Part{
         int skip=0;
         ArrayList<Action> actions=new ArrayList<>();
         
-        for(Move m: super.getGameState().getPossibleMoves()) {
+        for(Move m: gameState.getPossibleMoves()) {
             for(Action a: m.actions) {
                 actions.add(a);   
             }
