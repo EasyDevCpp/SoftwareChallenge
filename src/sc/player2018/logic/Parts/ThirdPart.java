@@ -17,7 +17,7 @@ public class ThirdPart extends Part{
                     super.setNewTask(3);
                 } else if(isMovePlayable(0, FieldType.HEDGEHOG)) {
                     super.getActions().add(new FallBack());
-                } else{
+                } else {
                     super.getActions().add(new Skip());
                 }
             } else if(super.getPlayer().getSalads() == 1) {
@@ -32,7 +32,7 @@ public class ThirdPart extends Part{
                     super.setNewTask(2);
                 } else if(isMovePlayable(0, FieldType.HEDGEHOG)) {
                     super.getActions().add(new FallBack());
-                } else{
+                } else {
                     super.getActions().add(new Skip());
                 }
             } else {
@@ -41,7 +41,7 @@ public class ThirdPart extends Part{
                 } else if(isMovePlayable(1, FieldType.CARROT)) {
                      super.getActions().add(new Advance(super.getDistance(FieldType.CARROT)));
                      super.setNewTask(2);
-                 } else{
+                 } else {
                     super.getActions().add(new Skip());
                 }
             }
@@ -55,7 +55,7 @@ public class ThirdPart extends Part{
                     super.setNewTask(2);
                 } else if(isMovePlayable(0, FieldType.HEDGEHOG)) {
                     super.getActions().add(new FallBack());
-                } else{
+                } else {
                     super.getActions().add(new Skip());
                 }
             } else if(super.getPlayer().getSalads() == 1) {
@@ -70,7 +70,7 @@ public class ThirdPart extends Part{
                     super.setNewTask(2);
                 } else if(isMovePlayable(0, FieldType.HEDGEHOG)) {
                     super.getActions().add(new FallBack());
-                } else{
+                } else {
                     super.getActions().add(new Skip());
                 }
             } else {
@@ -79,7 +79,7 @@ public class ThirdPart extends Part{
                 } else if(isMovePlayable(1, FieldType.CARROT)) {
                      super.getActions().add(new Advance(super.getDistance(FieldType.CARROT)));
                      super.setNewTask(2);
-                } else{
+                } else {
                     super.getActions().add(new Skip());
                 }
             }

@@ -8,8 +8,9 @@ public class SecondPart extends Part{
 
     @Override
     public void processAI() {
-        if(Sigmoid.getMostEfficientAction(super.getGameState())!=null) {
-            super.getActions().add(Sigmoid.getMostEfficientAction(super.getGameState()));
+        Action act=Sigmoid.getMostEfficientAction(super.getGameState());
+        if(act)!=null) {
+            super.getActions().add(act);
         } else {
             Board b=super.getGameState().getBoard();
             distances[0]=b.getNextFieldByType(FieldType.HEDGEHOG,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
