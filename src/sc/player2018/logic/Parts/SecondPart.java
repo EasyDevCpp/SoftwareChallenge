@@ -9,7 +9,7 @@ public class SecondPart extends Part{
     @Override
     public void processAI() {
         Action act=Sigmoid.getMostEfficientAction(super.getGameState());
-        if(act)!=null) {
+        if(act!=null) {
             super.getActions().add(act);
         } else {
             Board b=super.getGameState().getBoard();
