@@ -36,7 +36,7 @@ public class SecondPart extends Part{
             } else if(!enemy_fields[5]&&super.getKarrotCosts()[distances[5]]<=super.getPlayer().getCarrots()&&!(super.getPlayer().getLastNonSkipAction() instanceof ExchangeCarrots)) {
                 super.getActions().add(new Advance(distances[5]));
                 if(super.getPlayer().getCarrots()<90) super.setNewTask(2);
-                else super.setNewTask(3);
+                //else super.setNewTask(3); fixed #19 
             } else if(!enemy_fields[1]&&super.getKarrotCosts()[distances[1]]<=super.getPlayer().getCarrots()&&(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD)||super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)||super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD))) {
                 super.getActions().add(new Advance(distances[1], 0));
                 if(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD)) super.getActions().add(new Card(CardType.EAT_SALAD,1));
