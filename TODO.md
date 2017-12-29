@@ -6,9 +6,11 @@
 - [x] Implement Part abstract class
 - [x] Implement FLSLogic
 - [x] get back to a working client
-- [ ] Fix some errors
+- [ ] Fix #15
+- [ ] Fix #25
+- [ ] Fix #26
+- [ ] Fix #27
 
 ## Enhancements:
-- [ ] Enhance getMostEfficientAction() quality
-- [ ] Use getMostEfficientActon() in every  Part
-- [ ] Add a neural network to EnhancedLogic class
+- [x] Enhance getMostEfficientAction() quality
+- [x] Use getMostEfficientActon() in every  Part
