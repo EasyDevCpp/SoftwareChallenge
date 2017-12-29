@@ -74,7 +74,7 @@ public class Log {
 
     private void write(String msg){
         try {
-            out.write(msg+"\n");
+            out.write(msg+System.getProperty("line.separator"));
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();

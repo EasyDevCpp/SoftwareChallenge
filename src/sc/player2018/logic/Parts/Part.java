@@ -14,7 +14,7 @@ public abstract class Part {
     private Player enemy;
 
     public Part(){
-        actions = new ArrayList<>();
+        actions = new ArrayList<Action>();
     }
 
     public void processAI(){}

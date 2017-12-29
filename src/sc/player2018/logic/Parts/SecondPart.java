@@ -1,6 +1,7 @@
 package sc.player2018.logic.Parts;
 import sc.player2018.logic.Parts.extendedAI.Sigmoid;
 import sc.plugin2018.*;
+import java.util.ArrayList;
 
 public class SecondPart extends Part{
     private int distances[]=new int[6];
@@ -8,9 +9,9 @@ public class SecondPart extends Part{
 
     @Override
     public void processAI() {
-        Action act=Sigmoid.getMostEfficientAction(super.getGameState());
+        Move act=Sigmoid.getMostEfficientAction(super.getGameState());
         if(act!=null) {
-            super.getActions().add(act);
+            super.setActions(new ArrayList<Action>(act.getActions()));
         } else {
             Board b=super.getGameState().getBoard();
             distances[0]=b.getNextFieldByType(FieldType.HEDGEHOG,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
@@ -43,7 +44,7 @@ public class SecondPart extends Part{
                 else if(super.getPlayer().getCarrots()>50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20,1));
                 else if(enemy_fields[0]&&super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD)) super.getActions().add(new Card(CardType.HURRY_AHEAD,1));
             } else {
-                super.getActions().add(new Skip(1));
+                super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
             }
         }
     }

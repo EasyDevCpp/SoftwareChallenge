@@ -2,7 +2,9 @@ package sc.player2018.logic.Parts.extendedAI;
 import sc.plugin2018.*;
 
 import java.lang.Math;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Random;
 
 public final class Sigmoid {
     private Sigmoid() {
@@ -21,13 +23,13 @@ public final class Sigmoid {
     }
     /*
      * method: getMostEfficientAction()
-     * return: Action
+     * return: Move
      * desc:   returns the most significant Action
      * use to: do more efficient turns
      * 
      * author: Robin Krause
      */
-    public static Action getMostEfficientAction(GameState gameState) {
+    public static Move getMostEfficientAction(GameState gameState) {
         int average=0;
         int max=0;
         int advance=0;
@@ -36,7 +38,7 @@ public final class Sigmoid {
         int fallback=0;
         int eatsalad=0;
         int skip=0;
-        ArrayList<Action> actions=new ArrayList<>();
+        ArrayList<Action> actions=new ArrayList<Action>();
         
         for(Move m: gameState.getPossibleMoves()) {
             for(Action a: m.actions) {
@@ -74,10 +76,22 @@ public final class Sigmoid {
                 average+=(int)max/skip;
             }
         }
-        if(_sigmoid(average/max)>0.6) {
-            return actions.get((int)average/max);
+        if(_sigmoid(average/max)<0.6) {
+            return gameState.getPossibleMoves().get((int)average/max);
         } else {
             return null;
         }
+    }
+    /*
+     * method: getRandomAction()
+     * return: Move
+     * desc:   returns a random Action
+     * use to: -
+     * 
+     * author: Robin Krause
+     */
+    public static Move getRandomAction(GameState gameState) {
+        Random rand = new SecureRandom();
+        return gameState.getPossibleMoves().get(rand.nextInt(gameState.getPossibleMoves().size()));
     }
 }
