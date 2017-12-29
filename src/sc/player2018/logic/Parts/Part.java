@@ -1,6 +1,7 @@
 package sc.player2018.logic.Parts;
 
 import sc.plugin2018.*;
+import sc.player2018.logic.Parts.extendedAI.Sigmoid;
 
 import java.util.ArrayList;
 
@@ -12,9 +13,11 @@ public abstract class Part {
     private GameState gs;
     private Player player;
     private Player enemy;
+    private double quality;
 
     public Part(){
         actions = new ArrayList<Action>();
+        quality = 0.65;
     }
 
     public void processAI(){}
@@ -38,7 +41,12 @@ public abstract class Part {
             }
             newTask = 0;
         } else{
-            processAI();
+            Move act=Sigmoid.getMostEfficientAction(gs,quality);
+            if(act!=null) {
+                actions=new ArrayList<Action>(act.getActions());
+            } else {
+                processAI();
+            }
         }
 
         m = new Move(actions);
@@ -104,4 +112,6 @@ public abstract class Part {
     public void setEnemy(Player enemy) {
         this.enemy = enemy;
     }
+    public double getQuality() {return quality;}
+    public void setQuality(double q) {quality=q;}
 }

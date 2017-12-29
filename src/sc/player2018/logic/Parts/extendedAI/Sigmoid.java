@@ -22,14 +22,14 @@ public final class Sigmoid {
         return 0.5*(1+Math.tanh(value/2));
     }
     /*
-     * method: getMostEfficientAction()
+     * method: getMostEfficientAction(GameState gs,double quality)
      * return: Move
      * desc:   returns the most significant Action
      * use to: do more efficient turns
      * 
      * author: Robin Krause
      */
-    public static Move getMostEfficientAction(GameState gameState) {
+    public static Move getMostEfficientAction(GameState gameState,double quality) {
         int average=0;
         int max=0;
         int advance=0;
@@ -76,7 +76,7 @@ public final class Sigmoid {
                 average+=(int)max/skip;
             }
         }
-        if(_sigmoid(average/max)<0.6) {
+        if(_sigmoid(average/max)<1.25-quality) {
             return gameState.getPossibleMoves().get((int)average/max);
         } else {
             return null;
