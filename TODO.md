@@ -9,7 +9,7 @@
 - [ ] Fix #15
 - [ ] Fix #18
 - [x] Fix #25
-- [ ] Fix #26
+- [x] Fix #26
 - [ ] Fix #27
 
 ## Enhancements:
