@@ -45,9 +45,10 @@ public class Log {
             } else if (a instanceof FallBack){
                 movedescription += "fallback " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex() + " " + oldGS.getOtherPlayer().getCarrots() + " " + gameState.getOtherPlayer().getCarrots();
             } else if(a instanceof Card){
-                if(oldGS.getOtherPlayer().getCarrots() != gameState.getOtherPlayer().getCarrots()) movedescription += "|cardcarrot " + oldGS.getOtherPlayer().getCarrots() + " " + gameState.getOtherPlayer().getCarrots();
-                else if(oldGS.getOtherPlayer().getSalads() != gameState.getOtherPlayer().getSalads()) movedescription += "|cardsalad " + oldGS.getOtherPlayer().getSalads() + " " + gameState.getOtherPlayer().getSalads();
-                else movedescription += "|cardmove " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex();
+                if(oldGS != null && oldGS.getOtherPlayer().getCarrots() != gameState.getOtherPlayer().getCarrots()) movedescription += "|cardcarrot " + oldGS.getOtherPlayer().getCarrots() + " " + gameState.getOtherPlayer().getCarrots();
+                else if(oldGS != null && oldGS.getOtherPlayer().getSalads() != gameState.getOtherPlayer().getSalads()) movedescription += "|cardsalad " + oldGS.getOtherPlayer().getSalads() + " " + gameState.getOtherPlayer().getSalads();
+                else if(oldGS != null) movedescription += "|cardmove " + oldGS.getOtherPlayer().getFieldIndex() + " " + gameState.getOtherPlayer().getFieldIndex();
+                else movedescription += "Keine Ausgabe aufgrund von #25";
             }
         }
 
