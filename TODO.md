@@ -7,6 +7,7 @@
 - [x] Implement FLSLogic
 - [x] get back to a working client
 - [ ] Fix #15
+- [ ] Fix #18
 - [ ] Fix #25
 - [ ] Fix #26
 - [ ] Fix #27
