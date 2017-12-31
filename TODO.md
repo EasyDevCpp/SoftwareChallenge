@@ -1,5 +1,7 @@
 # TODO(From 0.3.0 -> 0.4.0)
 
+- [ ] Freeze at exactly 100 commits
+
 ## Important:
 - [x] Implement enhanced Log-Message
 - [x] Implement ExtendedLogic class
