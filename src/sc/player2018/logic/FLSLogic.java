@@ -23,10 +23,10 @@ public class FLSLogic {
     }
 
     public void update(GameState gs){
+        gameState = gs;
         parts[0].update(gs);
         parts[1].update(gs);
         parts[2].update(gs);
-        gameState = gs;
 
         if(gs.getCurrentPlayer().getFieldIndex() == 0 && gs.getOtherPlayer().getFieldIndex() == 0){
             log.printFields(gs.getBoard());
