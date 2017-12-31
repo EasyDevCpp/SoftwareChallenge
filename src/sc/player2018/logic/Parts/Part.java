@@ -28,7 +28,9 @@ public abstract class Part {
         enemy = gs.getOtherPlayer();
     }
 
-    public void play(){
+    public boolean play(){
+        boolean aiMove = false;
+
         actions.clear();
 
         if(newTask != 0) {
@@ -44,13 +46,17 @@ public abstract class Part {
             Move act=Sigmoid.getMostEfficientAction(gs,quality);
             if(act!=null) {
                 actions=new ArrayList<Action>(act.getActions());
+                aiMove = true;
             } else {
                 processAI();
+                aiMove = false;
             }
         }
 
         m = new Move(actions);
         m.orderActions();
+
+        return aiMove;
     }
 
     @Deprecated

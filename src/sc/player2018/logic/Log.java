@@ -22,12 +22,12 @@ public class Log {
         }
     }
 
-    public void logMove(GameState gameState, Move move){
+    public void logMove(GameState gameState, Move move, boolean aiMove){
         String partNumber = "";
         if(lastPlayedPart instanceof FirstPart) partNumber = "firstpart";
         else if(lastPlayedPart instanceof SecondPart) partNumber = "secondpart";
         else partNumber = "thirdpart";
-        partNumber += "(" + gameState.getOtherPlayer().getPlayerColor().name() + ")";
+        partNumber += "(" + gameState.getOtherPlayer().getPlayerColor().name() + ") [aimove]" + aiMove;
 
         String movedescription = "";
         for(Action a : move.actions) {

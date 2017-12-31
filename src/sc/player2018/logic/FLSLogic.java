@@ -12,6 +12,7 @@ public class FLSLogic {
     private GameState gameState;
     private Move m;
     private boolean hasPlayed;
+    private boolean aiMove = false;
 
     public FLSLogic(){
         parts = new Part[3];
@@ -32,7 +33,7 @@ public class FLSLogic {
         } else if(gs.getCurrentPlayer().getFieldIndex() == 64 || gs.getOtherPlayer().getFieldIndex() == 64){
             log.onGameEnd();
         } else if(hasPlayed){
-            log.logMove(gs, m);
+            log.logMove(gs, m, aiMove);
             hasPlayed = false;
         }/* else{
             log.logEnemy(gameState);
@@ -41,15 +42,15 @@ public class FLSLogic {
     
     public void play(){
         if(gameState.getCurrentPlayer().getFieldIndex()<23) {
-            parts[0].play();
+            aiMove = parts[0].play();
             m = parts[0].getMove();
             log.setLastPlayedPart(parts[0]);
         } else if(gameState.getCurrentPlayer().getFieldIndex()<43) {
-            parts[1].play();
+            aiMove = parts[1].play();
             m = parts[1].getMove();
             log.setLastPlayedPart(parts[1]);
         } else if(gameState.getCurrentPlayer().getFieldIndex()<=65) {
-            parts[2].play();
+            aiMove = parts[2].play();
             m = parts[2].getMove();
             log.setLastPlayedPart(parts[2]);
         }
