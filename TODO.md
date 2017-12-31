@@ -12,6 +12,7 @@
 - [x] Fix #26
 - [x] Fix #27
 - [ ] Fix #29
+- [ ] Fix #30
 
 ## Enhancements:
 - [x] Enhance getMostEfficientAction() quality
