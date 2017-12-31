@@ -76,7 +76,7 @@ public final class Sigmoid {
                 average+=(int)max/skip;
             }
         }
-        if(_sigmoid(average/max)<1.25-quality) {
+        if((0.69*_sigmoid(average/max)+0.03)<1.25-quality) {
             return gameState.getPossibleMoves().get((int)average/max);
         } else {
             return null;

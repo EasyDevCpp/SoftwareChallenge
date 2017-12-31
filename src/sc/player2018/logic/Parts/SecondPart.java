@@ -7,6 +7,10 @@ public class SecondPart extends Part{
     private int distances[]=new int[6];
     private boolean enemy_fields[]=new boolean[6];
 
+    public SecondPart() {
+        //set Quality here
+    }
+
     @Override
     public void processAI() {
         Board b=super.getGameState().getBoard();

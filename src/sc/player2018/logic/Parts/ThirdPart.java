@@ -2,7 +2,11 @@ package sc.player2018.logic.Parts;
 import sc.plugin2018.*;
 import sc.plugin2018.util.GameRuleLogic;
 
-public class ThirdPart extends Part{
+public class ThirdPart extends Part {
+    public ThirdPart() {
+        //set Qualit here
+    }
+
     @Override
     public void processAI() {
         if(super.getPlayer().getSalads() == 0) {

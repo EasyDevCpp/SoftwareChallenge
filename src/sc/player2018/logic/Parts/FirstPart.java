@@ -5,6 +5,10 @@ public class FirstPart extends Part{
     private int step;
     private boolean step0WasAtHare = false;
 
+    public FirstPart() {
+        //set Quality here
+    }
+
     @Override
     public void processAI(){
         Board b = super.getGameState().getBoard();
