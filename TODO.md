@@ -6,11 +6,11 @@
 - [x] Implement Part abstract class
 - [x] Implement FLSLogic
 - [x] get back to a working client
-- [ ] Fix #15
+- [x] Fix #15
 - [ ] Fix #18
 - [x] Fix #25
 - [x] Fix #26
-- [ ] Fix #27
+- [x] Fix #27
 
 ## Enhancements:
 - [x] Enhance getMostEfficientAction() quality
