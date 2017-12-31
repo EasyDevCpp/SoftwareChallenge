@@ -27,7 +27,8 @@ public class Log {
         if(lastPlayedPart instanceof FirstPart) partNumber = "firstpart";
         else if(lastPlayedPart instanceof SecondPart) partNumber = "secondpart";
         else partNumber = "thirdpart";
-        partNumber += "(" + gameState.getOtherPlayer().getPlayerColor().name() + ") [aimove]" + aiMove;
+        partNumber += "(" + gameState.getOtherPlayer().getPlayerColor().name() + ")";
+        if(aiMove) partNumber += " [aimove]";
 
         String movedescription = "";
         for(Action a : move.actions) {
