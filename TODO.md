@@ -14,7 +14,8 @@
 - [ ] Fix #29
 - [x] Fix #30
 - [ ] Fix #31
-- [ ] Fix #32
+- [ ] Fix #32 //Waiting for Kiel
+- [ ] Fix #35
 
 ## Enhancements:
 - [x] Enhance getMostEfficientAction() quality
