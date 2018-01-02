@@ -1,9 +1,6 @@
 package sc.player2018.logic;
 
 import sc.player2018.Starter;
-import sc.player2018.logic.Parts.FirstPart;
-import sc.player2018.logic.Parts.SecondPart;
-import sc.player2018.logic.Parts.ThirdPart;
 import sc.plugin2018.GameState;
 import sc.plugin2018.IGameHandler;
 import sc.plugin2018.Move;
@@ -47,6 +44,7 @@ public class Logic implements IGameHandler {
             System.out.println("Das Spiel wurde beendet! " + gameResult.getScores().toString());
         } else{
             System.out.println("Kein Spieler hat gewonnen hat gewonnen. ERROR:" + errorMsg);
+            fls.onError();
         }
     }
 }

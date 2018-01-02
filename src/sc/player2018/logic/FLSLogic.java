@@ -11,7 +11,6 @@ public class FLSLogic {
     private Log log;
     private GameState gameState;
     private Move m;
-    private boolean hasPlayed;
     private boolean aiMove = false;
 
     public FLSLogic(){
@@ -51,6 +50,11 @@ public class FLSLogic {
             m = parts[2].getMove();
             log.setLastPlayedPart(parts[2]);
         }
+        log.logMove(gameState, m, aiMove);
+    }
+
+    public void onError(){
+        log.write("\n\nERROR:");
         log.logMove(gameState, m, aiMove);
     }
 

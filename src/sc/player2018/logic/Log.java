@@ -74,7 +74,7 @@ public class Log {
         write("END");
     }
 
-    private void write(String msg){
+    public void write(String msg){
         try {
             out.write(msg+System.getProperty("line.separator"));
             out.flush();
