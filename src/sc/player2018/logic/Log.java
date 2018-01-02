@@ -27,28 +27,28 @@ public class Log {
         if(lastPlayedPart instanceof FirstPart) partNumber = "firstpart";
         else if(lastPlayedPart instanceof SecondPart) partNumber = "secondpart";
         else partNumber = "thirdpart";
-        partNumber += "(" + gameState.getOtherPlayer().getPlayerColor().name() + ")";
+        partNumber += "(" + gameState.getCurrentPlayer().getPlayerColor().name() + ")";
         if(aiMove) partNumber += " [aimove]";
 
         String movedescription = "";
         for(Action a : move.actions) {
             if (a instanceof Advance) {
-                if(gameState.getOtherPlayer().getFieldIndex() != 65){
-                    if (oldGS == null) movedescription += "[action]advance " + 0 + " " + gameState.getOtherPlayer().getFieldIndex() + " " + 68 + " " + gameState.getOtherPlayer().getCarrots();
-                    else movedescription += "[action]advance [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + gameState.getOtherPlayer().getFieldIndex() + " [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + gameState.getOtherPlayer().getCarrots();
+                if(gameState.getCurrentPlayer().getFieldIndex() != 65){
+                    if (oldGS == null) movedescription += "[action]advance " + 0 + " " + gameState.getCurrentPlayer().getFieldIndex() + " " + 68 + " " + gameState.getCurrentPlayer().getCarrots();
+                    else movedescription += "[action]advance [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex() + " [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
                 } else{
-                    movedescription += "[action]goal [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + gameState.getOtherPlayer().getFieldIndex();
+                    movedescription += "[action]goal [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex();
                 }
             } else if (a instanceof EatSalad) {
-                movedescription += "[action]eatsalad [oldsaladcount]" + oldGS.getOtherPlayer().getSalads() + " [newsaladcount]" + gameState.getOtherPlayer().getSalads();
+                movedescription += "[action]eatsalad [oldsaladcount]" + oldGS.getCurrentPlayer().getSalads() + " [newsaladcount]" + gameState.getCurrentPlayer().getSalads();
             } else if (a instanceof ExchangeCarrots) {
-                movedescription += "[action]exchangecarrots [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + gameState.getOtherPlayer().getCarrots();
+                movedescription += "[action]exchangecarrots [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
             } else if (a instanceof FallBack){
-                movedescription += "[action]fallback [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + gameState.getOtherPlayer().getFieldIndex() + " [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + gameState.getOtherPlayer().getCarrots();
+                movedescription += "[action]fallback [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex() + " [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
             } else if(a instanceof Card){
-                if(oldGS != null && oldGS.getOtherPlayer().getCarrots() != gameState.getOtherPlayer().getCarrots()) movedescription += "|[cardaction]cardcarrot [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + gameState.getOtherPlayer().getCarrots();
-                else if(oldGS != null && oldGS.getOtherPlayer().getSalads() != gameState.getOtherPlayer().getSalads()) movedescription += "|[cardaction]cardsalad [oldsaladcount]" + oldGS.getOtherPlayer().getSalads() + " [newsaladcount]" + gameState.getOtherPlayer().getSalads();
-                else if(oldGS != null) movedescription += "|[cardaction]cardmove [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + gameState.getOtherPlayer().getFieldIndex();
+                if(oldGS != null && oldGS.getCurrentPlayer().getCarrots() != gameState.getCurrentPlayer().getCarrots()) movedescription += "|[cardaction]cardcarrot [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
+                else if(oldGS != null && oldGS.getCurrentPlayer().getSalads() != gameState.getCurrentPlayer().getSalads()) movedescription += "|[cardaction]cardsalad [oldsaladcount]" + oldGS.getCurrentPlayer().getSalads() + " [newsaladcount]" + gameState.getCurrentPlayer().getSalads();
+                else if(oldGS != null) movedescription += "|[cardaction]cardmove [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex();
                 else movedescription += "Keine Ausgabe aufgrund von #25";
             }
         }

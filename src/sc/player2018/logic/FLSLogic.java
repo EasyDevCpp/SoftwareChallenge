@@ -32,10 +32,7 @@ public class FLSLogic {
             log.printFields(gs.getBoard());
         } else if(gs.getCurrentPlayer().getFieldIndex() == 64 || gs.getOtherPlayer().getFieldIndex() == 64){
             log.onGameEnd();
-        } else if(hasPlayed){
-            log.logMove(gs, m, aiMove);
-            hasPlayed = false;
-        }/* else{
+        } /* else{
             log.logEnemy(gameState);
         }*/
     }
@@ -54,7 +51,7 @@ public class FLSLogic {
             m = parts[2].getMove();
             log.setLastPlayedPart(parts[2]);
         }
-        hasPlayed = true;
+        log.logMove(gameState, m, aiMove);
     }
 
     public Move getMove() {

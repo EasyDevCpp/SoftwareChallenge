@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ThirdPart extends Part {
     public ThirdPart() {
-        super.setQuality(0.85); //35% threshold
+        super.setQuality(0.85); //40% threshold
     }
 
     @Override
@@ -25,8 +25,8 @@ public class ThirdPart extends Part {
             } else if(isMovePlayable(0, FieldType.HEDGEHOG)) {
                 super.getActions().add(new FallBack());
             } else {
-                super.getActions().add(new Skip());
-                //super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions())); Alternate
+                //super.getActions().add(new Skip());
+                super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
             }
         } else if(super.getPlayer().getSalads() == 1) {
             if(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD) && isMovePlayable(1, FieldType.HARE)) {
@@ -41,8 +41,8 @@ public class ThirdPart extends Part {
             //} else if(isMovePlayable(0, FieldType.HEDGEHOG)) { #Fix 18
                 //super.getActions().add(new FallBack());
             } else {
-                super.getActions().add(new Skip());
-                //super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions())); Alternate
+                //super.getActions().add(new Skip());
+                super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
             }
         } else {
             if(GameRuleLogic.isValidToFallBack(super.getGameState()) && isMovePlayable(0, FieldType.HEDGEHOG) && super.getEnemy().getFieldIndex()+5 < super.getPlayer().getFieldIndex()) { //Fix #18 --> give it a reason, value 5 can be adjusted!!!
@@ -51,8 +51,8 @@ public class ThirdPart extends Part {
                  super.getActions().add(new Advance(super.getDistance(FieldType.CARROT)));
                  super.setNewTask(2);
              } else {
-                super.getActions().add(new Skip());
-                //super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions())); Alternate
+                //super.getActions().add(new Skip());
+                super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
             }
         }
     }
