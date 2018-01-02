@@ -1,7 +1,5 @@
 # TODO(From 0.3.0 -> 0.4.0)
 
-- [ ] Freeze at exactly 100 commits
-
 ## Important:
 - [x] Implement enhanced Log-Message
 - [x] Implement ExtendedLogic class
@@ -9,12 +7,14 @@
 - [x] Implement FLSLogic
 - [x] get back to a working client
 - [x] Fix #15
-- [ ] Fix #18
+- [x] Fix #18
 - [x] Fix #25
 - [x] Fix #26
 - [x] Fix #27
-- [x] Fix #29
-- [ ] Fix #30
+- [ ] Fix #29
+- [x] Fix #30
+- [ ] Fix #31
+- [ ] Fix #32
 
 ## Enhancements:
 - [x] Enhance getMostEfficientAction() quality
