@@ -43,12 +43,14 @@ public abstract class Part {
             }
             newTask = 0;
         } else{
-            Move act=Sigmoid.getMostEfficientAction(gs,quality);
-            if(act!=null) {
+            processAI();
+            //Super sick fallback if someone of us fucks up...
+            //Not quite sure it's working or not...
+            if(!Sigmoid.isPossible(new Move(actions),gs)) {
+                Move act=Sigmoid.getRandomAction(gs);
                 actions=new ArrayList<Action>(act.getActions());
-                aiMove = true;
+                aiMove=true;
             } else {
-                processAI();
                 aiMove = false;
             }
         }
