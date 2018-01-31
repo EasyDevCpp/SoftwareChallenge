@@ -1,5 +1,5 @@
 package sc.player2018.logic.Parts;
-import sc.player2018.logic.Parts.extendedAI.Sigmoid;
+import sc.player2018.logic.Parts.extendedAI.ExtendedAI;
 import sc.plugin2018.*;
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class SecondPart extends Part{
             else if(super.getPlayer().getCarrots()>50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20,1));
             else if(enemy_fields[0]&&super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD)) super.getActions().add(new Card(CardType.HURRY_AHEAD,1));
         } else {
-            super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
+            super.setActions(new ArrayList<Action>(ExtendedAI.getRandomMove(super.getGameState()).getActions()));
         }
     }
 }

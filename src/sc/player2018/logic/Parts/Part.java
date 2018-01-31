@@ -1,7 +1,7 @@
 package sc.player2018.logic.Parts;
 
 import sc.plugin2018.*;
-import sc.player2018.logic.Parts.extendedAI.Sigmoid;
+import sc.player2018.logic.Parts.extendedAI.ExtendedAI;
 
 import java.util.ArrayList;
 
@@ -43,15 +43,23 @@ public abstract class Part {
             }
             newTask = 0;
         } else{
-            processAI();
-            //Super sick fallback if someone of us fucks up...
-            //Not quite sure it's working or not...
-            if(!Sigmoid.isPossible(new Move(actions),gs)) {
-                Move act=Sigmoid.getRandomAction(gs);
-                actions=new ArrayList<Action>(act.getActions());
+            Move aimove;
+            ExtendedAI ai=new ExtendedAI();
+            aimove=ai.getMostEfficientMove(gs,3,0);
+            if(aimove!=null) {
+                actions=new ArrayList<Action>(aimove.getActions());
                 aiMove=true;
             } else {
-                aiMove = false;
+                processAI();
+                //Super sick fallback if someone of us fucks up...
+                //Not quite sure it's working or not...
+                if(!ExtendedAI.isMovePossible(new Move(actions),gs)) {
+                    aimove=ExtendedAI.getRandomMove(gs);
+                    actions=new ArrayList<Action>(aimove.getActions());
+                    aiMove=true;
+                } else {
+                    aiMove = false;
+                }
             }
         }
 

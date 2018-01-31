@@ -1,6 +1,6 @@
 package sc.player2018.logic.Parts;
 import sc.plugin2018.*;
-import sc.player2018.logic.Parts.extendedAI.Sigmoid;
+import sc.player2018.logic.Parts.extendedAI.ExtendedAI;
 import sc.plugin2018.util.GameRuleLogic;
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class ThirdPart extends Part {
                 super.getActions().add(new FallBack());
             } else {
                 //super.getActions().add(new Skip());
-                super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
+                super.setActions(new ArrayList<Action>(ExtendedAI.getRandomMove(super.getGameState()).getActions()));
             }
         } else if(super.getPlayer().getSalads() == 1) {
             if(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD) && isMovePlayable(1, FieldType.HARE)) {
@@ -42,7 +42,7 @@ public class ThirdPart extends Part {
                 //super.getActions().add(new FallBack());
             } else {
                 //super.getActions().add(new Skip());
-                super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
+                super.setActions(new ArrayList<Action>(ExtendedAI.getRandomMove(super.getGameState()).getActions()));
             }
         } else {
             if(GameRuleLogic.isValidToFallBack(super.getGameState()) && isMovePlayable(0, FieldType.HEDGEHOG) && super.getEnemy().getFieldIndex()+5 < super.getPlayer().getFieldIndex()) { //Fix #18 --> give it a reason, value 5 can be adjusted!!!
@@ -52,7 +52,7 @@ public class ThirdPart extends Part {
                  super.setNewTask(2);
              } else {
                 //super.getActions().add(new Skip());
-                super.setActions(new ArrayList<Action>(Sigmoid.getRandomAction(super.getGameState()).getActions()));
+                super.setActions(new ArrayList<Action>(ExtendedAI.getRandomMove(super.getGameState()).getActions()));
             }
         }
     }
