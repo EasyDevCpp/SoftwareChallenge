@@ -33,8 +33,8 @@ public abstract class Part {
 
         actions.clear();
 
-        if(newTask != 0 || gs.getBoard().getTypeAt(player.getFieldIndex()) == FieldType.SALAD) {
-            if (newTask == 1 || gs.getBoard().getTypeAt(player.getFieldIndex()) == FieldType.SALAD) {
+        if(newTask != 0 || (gs.getBoard().getTypeAt(player.getFieldIndex()) == FieldType.SALAD && !(player.getLastNonSkipAction() instanceof EatSalad))) {
+            if (newTask == 1 || (gs.getBoard().getTypeAt(player.getFieldIndex()) == FieldType.SALAD && !(player.getLastNonSkipAction() instanceof EatSalad))) {
                 actions.add(new EatSalad(0));
             } else if (newTask == 2){
                 actions.add(new ExchangeCarrots(+10));
