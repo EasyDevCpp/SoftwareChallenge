@@ -43,30 +43,36 @@ public class Log {
 
     public void logEnemy(GameState gameState){
         this.gameState = gameState;
-        writeEnemy("ENEMY " + findMoveDescription(gameState.getOtherPlayer(), gameState.getOtherPlayer().getLastNonSkipAction()));
+        writeEnemy("ENEMY " + findMoveDescription(gameState.getOtherPlayer(), gameState.getOtherPlayer().getLastNonSkipAction())); //First Move of enemy cannot be displayed
     }
     
     private String findMoveDescription(Player p, Action a){
         String log = "";
+        
+        Player old = null;
+        if(oldGS != null){
+            if(p.getPlayerColor() == oldGS.getCurrentPlayer().getPlayerColor()) old = oldGS.getCurrentPlayer();
+            else old = oldGS.getOtherPlayer();
+        }
 
         if (a instanceof Advance) {
             if(p.getFieldIndex() != 65){
-                if (oldGS == null) log += "[action]advance " + 0 + " " + p.getFieldIndex() + " " + 68 + " " + p.getCarrots();
-                else log += "[action]advance [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex() + " [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
+                if (oldGS == null) log += "[action]advance [oldpos]" + 0 + " [newpos]" + p.getFieldIndex() + " [oldcarrotcount]" + 68 + " [newcarrotcount]" + p.getCarrots();
+                else log += "[action]advance [oldpos]" + old.getFieldIndex() + " [newpos]" + p.getFieldIndex() + " [oldcarrotcount]" + old.getCarrots() + " [newcarrotcount]" + p.getCarrots();
             } else{
-                log += "[action]goal [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex();
+                log += "[action]goal [oldpos]" + old.getFieldIndex() + " [newpos]" + p.getFieldIndex();
             }
         } else if (a instanceof EatSalad) {
-            log += "[action]eatsalad [oldsaladcount]" + oldGS.getOtherPlayer().getSalads() + " [newsaladcount]" + p.getSalads();
+            log += "[action]eatsalad [oldsaladcount]" + old.getSalads() + " [newsaladcount]" + p.getSalads();
         } else if (a instanceof ExchangeCarrots) {
-            log += "[action]exchangecarrots [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
+            log += "[action]exchangecarrots [oldcarrotcount]" + old.getCarrots() + " [newcarrotcount]" + p.getCarrots();
         } else if (a instanceof FallBack){
-            log += "[action]fallback [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex() + " [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
+            log += "[action]fallback [oldpos]" + old.getFieldIndex() + " [newpos]" + p.getFieldIndex() + " [oldcarrotcount]" + old.getCarrots() + " [newcarrotcount]" + p.getCarrots();
         } else if(a instanceof Card){
-            if(oldGS != null && oldGS.getOtherPlayer().getCarrots() != p.getCarrots()) log += "|[cardaction]cardcarrot [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
-            else if(oldGS != null && oldGS.getOtherPlayer().getSalads() != p.getSalads()) log += "|[cardaction]cardsalad [oldsaladcount]" + oldGS.getOtherPlayer().getSalads() + " [newsaladcount]" + p.getSalads();
-            else if(oldGS != null) log += "|[cardaction]cardmove [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex();
-            else log += "Keine Ausgabe aufgrund von #25";
+            if(oldGS != null && old.getCarrots() != p.getCarrots()) log += "|[cardaction]cardcarrot [oldcarrotcount]" + old.getCarrots() + " [newcarrotcount]" + p.getCarrots();
+            else if(oldGS != null && old.getSalads() != p.getSalads()) log += "|[cardaction]cardsalad [oldsaladcount]" + old.getSalads() + " [newsaladcount]" + p.getSalads();
+            else if(oldGS != null) log += "|[cardaction]cardmove [oldpos]" + old.getFieldIndex() + " [newpos]" + p.getFieldIndex();
+            //else log += "Keine Ausgabe aufgrund von #25";
         }
         return log;
     }
