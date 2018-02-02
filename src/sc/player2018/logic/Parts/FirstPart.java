@@ -28,11 +28,13 @@ public class FirstPart extends Part{
                             super.getActions().add(new Skip(1));
                         }
                     } else{
-                        if(super.getKarrotCosts()[b.getNextFieldByType(FieldType.HARE, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){ //stage0WasAtHare == false
+                        if(super.getPlayer().getCards().contains(CardType.EAT_SALAD) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.HARE, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){ //stage0WasAtHare == false
                             super.getActions().add(new Advance(b.getNextFieldByType(FieldType.HARE, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
                             super.getActions().add(new Card(CardType.EAT_SALAD, 1));
 
                             step0WasAtHare = true;
+                        } else if(isMovePlayable(1, FieldType.CARROT)){
+                            super.getActions().add(new Advance(getDistance(FieldType.CARROT)));
                         } else{
                             super.getActions().add(new Skip(1));
                         }
