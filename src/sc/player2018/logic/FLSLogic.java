@@ -37,6 +37,12 @@ public class FLSLogic {
     }
     
     public void play(){
+        try{
+            log.logEnemy(gameState);
+        }catch (Exception e){
+            System.out.println("NullPointer beim ersten Zug, allerdings unwichtig.");
+        }
+
         if(gameState.getCurrentPlayer().getFieldIndex()<23) {
             aiMove = parts[0].play();
             m = parts[0].getMove();

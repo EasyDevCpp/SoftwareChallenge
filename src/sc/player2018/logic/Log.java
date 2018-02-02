@@ -8,21 +8,23 @@ import sc.plugin2018.*;
 import java.io.*;
 
 public class Log {
-    private BufferedWriter out;
+    private BufferedWriter playerOut;
+    private BufferedWriter enemyOut;
     private GameState oldGS;
+    private GameState gameState;
     private Part lastPlayedPart;
 
     public Log(){
         try {
             String file = Log.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();                 //erzeugt log-Datei am Speicherort der .jar
-            file = file.substring(0, file.lastIndexOf("/")) + "/log.txt";
-            out = new BufferedWriter(new FileWriter(new File(file), false));
+            playerOut = new BufferedWriter(new FileWriter(new File(file.substring(0, file.lastIndexOf("/")) + "/log.txt"), false));
+            enemyOut = new BufferedWriter(new FileWriter(new File(file.substring(0, file.lastIndexOf("/")) + "/log_enemy.txt"), false));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void logMove(GameState gameState, Move move, boolean aiMove){
+    public void logMove(GameState gameState, Move move, boolean aiMove){        
         String partNumber = "";
         if(lastPlayedPart instanceof FirstPart) partNumber = "firstpart";
         else if(lastPlayedPart instanceof SecondPart) partNumber = "secondpart";
@@ -32,25 +34,7 @@ public class Log {
 
         String movedescription = "";
         for(Action a : move.actions) {
-            if (a instanceof Advance) {
-                if(gameState.getCurrentPlayer().getFieldIndex() != 65){
-                    if (oldGS == null) movedescription += "[action]advance " + 0 + " " + gameState.getCurrentPlayer().getFieldIndex() + " " + 68 + " " + gameState.getCurrentPlayer().getCarrots();
-                    else movedescription += "[action]advance [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex() + " [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
-                } else{
-                    movedescription += "[action]goal [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex();
-                }
-            } else if (a instanceof EatSalad) {
-                movedescription += "[action]eatsalad [oldsaladcount]" + oldGS.getCurrentPlayer().getSalads() + " [newsaladcount]" + gameState.getCurrentPlayer().getSalads();
-            } else if (a instanceof ExchangeCarrots) {
-                movedescription += "[action]exchangecarrots [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
-            } else if (a instanceof FallBack){
-                movedescription += "[action]fallback [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex() + " [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
-            } else if(a instanceof Card){
-                if(oldGS != null && oldGS.getCurrentPlayer().getCarrots() != gameState.getCurrentPlayer().getCarrots()) movedescription += "|[cardaction]cardcarrot [oldcarrotcount]" + oldGS.getCurrentPlayer().getCarrots() + " [newcarrotcount]" + gameState.getCurrentPlayer().getCarrots();
-                else if(oldGS != null && oldGS.getCurrentPlayer().getSalads() != gameState.getCurrentPlayer().getSalads()) movedescription += "|[cardaction]cardsalad [oldsaladcount]" + oldGS.getCurrentPlayer().getSalads() + " [newsaladcount]" + gameState.getCurrentPlayer().getSalads();
-                else if(oldGS != null) movedescription += "|[cardaction]cardmove [oldpos]" + oldGS.getCurrentPlayer().getFieldIndex() + " [newpos]" + gameState.getCurrentPlayer().getFieldIndex();
-                else movedescription += "Keine Ausgabe aufgrund von #25";
-            }
+            movedescription += findMoveDescription(gameState.getCurrentPlayer(), a);
         }
 
         write(partNumber + " " + movedescription);
@@ -58,8 +42,33 @@ public class Log {
     }
 
     public void logEnemy(GameState gameState){
-        if(oldGS == null) write("enemy " + 0 + " " + gameState.getCurrentPlayer().getFieldIndex());
-        else write("enemy " + oldGS.getCurrentPlayer().getFieldIndex() + " " + gameState.getCurrentPlayer().getFieldIndex());
+        this.gameState = gameState;
+        writeEnemy("ENEMY " + findMoveDescription(gameState.getOtherPlayer(), gameState.getOtherPlayer().getLastNonSkipAction()));
+    }
+    
+    private String findMoveDescription(Player p, Action a){
+        String log = "";
+
+        if (a instanceof Advance) {
+            if(p.getFieldIndex() != 65){
+                if (oldGS == null) log += "[action]advance " + 0 + " " + p.getFieldIndex() + " " + 68 + " " + p.getCarrots();
+                else log += "[action]advance [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex() + " [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
+            } else{
+                log += "[action]goal [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex();
+            }
+        } else if (a instanceof EatSalad) {
+            log += "[action]eatsalad [oldsaladcount]" + oldGS.getOtherPlayer().getSalads() + " [newsaladcount]" + p.getSalads();
+        } else if (a instanceof ExchangeCarrots) {
+            log += "[action]exchangecarrots [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
+        } else if (a instanceof FallBack){
+            log += "[action]fallback [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex() + " [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
+        } else if(a instanceof Card){
+            if(oldGS != null && oldGS.getOtherPlayer().getCarrots() != p.getCarrots()) log += "|[cardaction]cardcarrot [oldcarrotcount]" + oldGS.getOtherPlayer().getCarrots() + " [newcarrotcount]" + p.getCarrots();
+            else if(oldGS != null && oldGS.getOtherPlayer().getSalads() != p.getSalads()) log += "|[cardaction]cardsalad [oldsaladcount]" + oldGS.getOtherPlayer().getSalads() + " [newsaladcount]" + p.getSalads();
+            else if(oldGS != null) log += "|[cardaction]cardmove [oldpos]" + oldGS.getOtherPlayer().getFieldIndex() + " [newpos]" + p.getFieldIndex();
+            else log += "Keine Ausgabe aufgrund von #25";
+        }
+        return log;
     }
 
     public void printFields(Board b){
@@ -76,8 +85,17 @@ public class Log {
 
     public void write(String msg){
         try {
-            out.write(msg+System.getProperty("line.separator"));
-            out.flush();
+            playerOut.write(msg+System.getProperty("line.separator"));
+            playerOut.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeEnemy(String msg){
+        try {
+            enemyOut.write(msg+System.getProperty("line.separator"));
+            enemyOut.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
