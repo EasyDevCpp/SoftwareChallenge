@@ -87,7 +87,7 @@ public class FirstPart extends Part{
                 super.getActions().add(new Advance(b.getNextFieldByType(FieldType.POSITION_1, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
             } else if(!enemyOnNextFieldType(FieldType.CARROT) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
                 super.getActions().add(new Advance(b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
-            } else if(!enemyOnPreviousFieldType(FieldType.HEDGEHOG) && super.getKarrotCosts()[b.getPreviousFieldByType(FieldType.HEDGEHOG, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+            } else if(!enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
                 super.getActions().add(new FallBack(0));
             } else{
                 super.getActions().add(new Skip(1));
