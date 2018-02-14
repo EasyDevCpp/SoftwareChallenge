@@ -8,17 +8,15 @@ import sc.plugin2018.*;
 import java.io.*;
 
 public class Log {
-    private BufferedWriter playerOut;
-    private BufferedWriter enemyOut;
+    private BufferedWriter out;
     private GameState oldGS;
     private GameState gameState;
     private Part lastPlayedPart;
 
-    public Log(){
+    public Log(String fileName){
         try {
             String file = Log.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();                 //erzeugt log-Datei am Speicherort der .jar
-            playerOut = new BufferedWriter(new FileWriter(new File(file.substring(0, file.lastIndexOf("/")) + "/log.txt"), false));
-            enemyOut = new BufferedWriter(new FileWriter(new File(file.substring(0, file.lastIndexOf("/")) + "/log_enemy.txt"), false));
+            out = new BufferedWriter(new FileWriter(new File(file.substring(0, file.lastIndexOf("/")) + "/" + fileName + ".txt"), false));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,7 +41,7 @@ public class Log {
 
     public void logEnemy(GameState gameState){
         this.gameState = gameState;
-        writeEnemy("ENEMY " + findMoveDescription(gameState.getOtherPlayer(), gameState.getOtherPlayer().getLastNonSkipAction())); //First Move of enemy cannot be displayed
+        write("ENEMY " + findMoveDescription(gameState.getOtherPlayer(), gameState.getOtherPlayer().getLastNonSkipAction())); //First Move of enemy cannot be displayed
     }
     
     private String findMoveDescription(Player p, Action a){
@@ -91,17 +89,8 @@ public class Log {
 
     public void write(String msg){
         try {
-            playerOut.write(msg+System.getProperty("line.separator"));
-            playerOut.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void writeEnemy(String msg){
-        try {
-            enemyOut.write(msg+System.getProperty("line.separator"));
-            enemyOut.flush();
+            out.write(msg+System.getProperty("line.separator"));
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

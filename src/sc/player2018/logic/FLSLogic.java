@@ -8,7 +8,8 @@ import sc.plugin2018.Move;
 
 public class FLSLogic {
     private Part[] parts;
-    private Log log;
+    private Log logPlayer;
+    private Log logEnemy;
     private GameState gameState;
     private Move m;
     private boolean aiMove = false;
@@ -18,7 +19,8 @@ public class FLSLogic {
         parts[0] = new FirstPart();
         parts[1] = new SecondPart();
         parts[2] = new ThirdPart();
-        log = new Log();
+        logPlayer = new Log("log");
+        logEnemy = new Log("log_enemy");
     }
 
     public void update(GameState gs){
@@ -28,9 +30,9 @@ public class FLSLogic {
         parts[2].update(gs);
 
         if(gs.getCurrentPlayer().getFieldIndex() == 0 && gs.getOtherPlayer().getFieldIndex() == 0){
-            log.printFields(gs.getBoard());
+            logPlayer.printFields(gs.getBoard());
         } else if(gs.getCurrentPlayer().getFieldIndex() == 64 || gs.getOtherPlayer().getFieldIndex() == 64){
-            log.onGameEnd();
+            logPlayer.onGameEnd();
         } /* else{
             log.logEnemy(gameState);
         }*/
@@ -38,7 +40,7 @@ public class FLSLogic {
     
     public void play(){
         try{
-            log.logEnemy(gameState);
+            logEnemy.logEnemy(gameState);
         }catch (Exception e){
             System.out.println("NullPointer beim ersten Zug, allerdings unwichtig.");
         }
@@ -46,22 +48,22 @@ public class FLSLogic {
         if(gameState.getCurrentPlayer().getFieldIndex()<23) {
             aiMove = parts[0].play();
             m = parts[0].getMove();
-            log.setLastPlayedPart(parts[0]);
+            logPlayer.setLastPlayedPart(parts[0]);
         } else if(gameState.getCurrentPlayer().getFieldIndex()<43) {
             aiMove = parts[1].play();
             m = parts[1].getMove();
-            log.setLastPlayedPart(parts[1]);
+            logPlayer.setLastPlayedPart(parts[1]);
         } else if(gameState.getCurrentPlayer().getFieldIndex()<=65) {
             aiMove = parts[2].play();
             m = parts[2].getMove();
-            log.setLastPlayedPart(parts[2]);
+            logPlayer.setLastPlayedPart(parts[2]);
         }
-        log.logMove(gameState, m, aiMove);
+        logPlayer.logMove(gameState, m, aiMove);
     }
 
     public void onError(){
-        log.write("\n\nERROR:");
-        log.logMove(gameState, m, aiMove);
+        logPlayer.write("\n\nERROR:");
+        logPlayer.logMove(gameState, m, aiMove);
     }
 
     public Move getMove() {

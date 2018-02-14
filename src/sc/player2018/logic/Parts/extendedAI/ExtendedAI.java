@@ -1,4 +1,5 @@
 package sc.player2018.logic.Parts.extendedAI;
+import sc.player2018.logic.Log;
 import sc.plugin2018.*;
 import sc.plugin2018.util.Constants;
 
@@ -12,8 +13,11 @@ public final class ExtendedAI {
     private static final Random rand=new SecureRandom();
     private static ArrayList<Move> perfectMoves=new ArrayList<Move>();
     private static ArrayList<Action> actionContainer=new ArrayList<Action>();
+    private Log log;
 
     public ExtendedAI() {
+        log = new Log("extendedAI");
+
         actionContainer.add(new Advance(1));                                        //0
         actionContainer.add(new Advance(2));                                        //1
         actionContainer.add(new Advance(3));                                        //2
@@ -63,7 +67,7 @@ public final class ExtendedAI {
      * author: Robin Krause
      */
     public static Move getMostEfficientMove(GameState gameState,int threshold,int quality) {
-        if(gameState.getCurrentPlayerColor().name()=="BLUE") {
+        if(gameState.getCurrentPlayerColor().name().equals("BLUE")) {
             ArrayList<Action> tmp=new ArrayList<Action>();
             tmp.add(actionContainer.get(0));
             tmp.add(actionContainer.get(21));
