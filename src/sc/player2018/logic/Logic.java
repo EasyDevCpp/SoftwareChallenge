@@ -4,13 +4,11 @@ import sc.player2018.Starter;
 import sc.player2018.logic.Parts.FirstPart;
 import sc.player2018.logic.Parts.SecondPart;
 import sc.player2018.logic.Parts.ThirdPart;
-import sc.plugin2018.GameState;
-import sc.plugin2018.IGameHandler;
-import sc.plugin2018.Move;
-import sc.plugin2018.Player;
+import sc.plugin2018.*;
 import sc.shared.GameResult;
 import sc.shared.PlayerColor;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Logic implements IGameHandler {
     private Starter client;
@@ -56,20 +54,26 @@ public class Logic implements IGameHandler {
 
     @Override
     public void onRequestAction() {
+        Move m = null;
         if(p.getFieldIndex()<23) {
             first.update(gs,p,enemy);
             first.processAI();
-            sendAction(first.getMove());
+            m = first.getMove();
         } else if(p.getFieldIndex()<43) {
             second.update(gs,p,enemy);
             second.processAI();
-            sendAction(second.getMove());
-
+            m = second.getMove();
         } else if(p.getFieldIndex()<=65) {
             third.update(gs,p,enemy);
             third.processAI();
-            sendAction(third.getMove());
+            m = third.getMove();
         }
+
+        if(!ExtendedAI.isMovePossible(m,gs)) {
+            m = ExtendedAI.getRandomMove(gs);
+        }
+
+        sendAction(m);
     }
 
     @Override
