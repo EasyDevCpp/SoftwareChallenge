@@ -56,9 +56,9 @@ public class RandomLogic implements IGameHandler {
         long startTime = System.nanoTime();
         log.info("Es wurde ein Zug angefordert.");
         ArrayList<Move> possibleMove = gameState.getPossibleMoves(); // Enthält mindestens ein Element
-        ArrayList<Move> saladMoves = new ArrayList<>();
-        ArrayList<Move> winningMoves = new ArrayList<>();
-        ArrayList<Move> selectedMoves = new ArrayList<>();
+        ArrayList<Move> saladMoves = new ArrayList<Move>();
+        ArrayList<Move> winningMoves = new ArrayList<Move>();
+        ArrayList<Move> selectedMoves = new ArrayList<Move>();
 
         int index = currentPlayer.getFieldIndex();
         for (Move move : possibleMove) {
