@@ -30,7 +30,8 @@ public class SecondPart extends Part{
             super.setNewTask(1);
         } else if((!enemy_fields[2]&&super.getKarrotCosts()[distances[2]]<=super.getPlayer().getCarrots())&&(!enemy_fields[3]&&super.getKarrotCosts()[distances[3]]<=super.getPlayer().getCarrots())) {
             if(super.getPlayer().getFieldIndex()>super.getEnemy().getFieldIndex()) super.getActions().add(new Advance(distances[2]));
-            else if(super.getPlayer().getFieldIndex()<super.getEnemy().getFieldIndex()) super.getActions().add(new Advance(distances[3]));
+            else if(super.getPlayer().getFieldIndex()+getDistance(FieldType.POSITION_2)<super.getEnemy().getFieldIndex()) super.getActions().add(new Advance(distances[3]));
+            else super.getActions().add(new FallBack(0));
         } else if(!enemy_fields[5]&&super.getKarrotCosts()[distances[5]]<=super.getPlayer().getCarrots()&&!(super.getPlayer().getLastNonSkipAction() instanceof ExchangeCarrots)) {
             super.getActions().add(new Advance(distances[5]));
             if(super.getPlayer().getCarrots()<90) super.setNewTask(2);
@@ -41,6 +42,15 @@ public class SecondPart extends Part{
             else if(super.getPlayer().getCarrots()<50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, 20,1));
             else if(super.getPlayer().getCarrots()>50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20,1));
             else if(enemy_fields[0]&&super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD)) super.getActions().add(new Card(CardType.HURRY_AHEAD,1));
+        } else if(isMovePlayable(1, FieldType.CARROT)){
+            super.getActions().add(new Advance(getDistance(FieldType.CARROT)));
+            super.setNewTask(2);
+        } else if(isMovePlayable(1, FieldType.POSITION_2)) {
+            super.getActions().add(new Advance(getDistance(FieldType.POSITION_2)));
+        } else if(isMovePlayable(1, FieldType.POSITION_1)) {
+            super.getActions().add(new Advance(getDistance(FieldType.POSITION_1)));
+        } else if(isMovePlayable(0, FieldType.HEDGEHOG)) {
+            super.getActions().add(new FallBack());
         } else {
             super.getActions().add(new Skip(0));
         }

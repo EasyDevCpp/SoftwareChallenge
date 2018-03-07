@@ -45,7 +45,7 @@ public class FirstPart extends Part{
             }
         } else if(step == 1){
             if(super.getPlayer().getFieldIndex() > super.getEnemy().getFieldIndex()){
-                if(!enemyOnNextFieldType(FieldType.SALAD) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex())] <= super.getPlayer().getCarrots()){
+                if(isMovePlayable(1, FieldType.SALAD)){
                     super.getActions().add(new Advance(b.getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));  //go to second part
                     setNewTask(1);
                     step = 2;
@@ -59,7 +59,7 @@ public class FirstPart extends Part{
                     setNewTask(2);
                 }
             } else{
-                if(!enemyOnNextFieldType(FieldType.SALAD) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+                if(isMovePlayable(1, FieldType.SALAD)){
                     super.getActions().add(new Advance(b.getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex())); //go to second part
                     setNewTask(1);
                     step = 2;
@@ -81,11 +81,13 @@ public class FirstPart extends Part{
                 }
             }
         } else if(step == 2){
-            if(!enemyOnNextFieldType(FieldType.POSITION_1) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.POSITION_1, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+            if(!enemyOnNextFieldType(FieldType.POSITION_1) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.POSITION_1, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots() && getPlayer().getFieldIndex() + getDistance(FieldType.POSITION_1) > getEnemy().getFieldIndex()){
                 super.getActions().add(new Advance(b.getNextFieldByType(FieldType.POSITION_1, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
+            } else if(isMovePlayable(1, FieldType.POSITION_2) && getPlayer().getFieldIndex() + getDistance(FieldType.POSITION_2) < getEnemy().getFieldIndex()){
+                super.getActions().add(new Advance(getDistance(FieldType.POSITION_2)));
             } else if(!enemyOnNextFieldType(FieldType.CARROT) && super.getKarrotCosts()[b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
                 super.getActions().add(new Advance(b.getNextFieldByType(FieldType.CARROT, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()));
-            } else if(!enemyOnPreviousFieldType(FieldType.HEDGEHOG) && super.getKarrotCosts()[b.getPreviousFieldByType(FieldType.HEDGEHOG, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= super.getPlayer().getCarrots()){
+            } else if(!enemyOnPreviousFieldType(FieldType.HEDGEHOG)){
                 super.getActions().add(new FallBack(0));
             } else{
                 super.getActions().add(new Skip(1));

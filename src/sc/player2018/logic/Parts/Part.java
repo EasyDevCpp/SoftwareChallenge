@@ -2,7 +2,11 @@ package sc.player2018.logic.Parts;
 
 import sc.player2018.logic.Parts.extendedAI.ExtendedAI;
 import sc.plugin2018.*;
+import sc.plugin2018.util.GameRuleLogic;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Part {
@@ -32,6 +36,10 @@ public abstract class Part {
         boolean aiMove = false;
 
         actions.clear();
+
+        if(player.getSalads() == 0 && getGameState().getTypeAt(player.getFieldIndex()) == FieldType.CARROT && player.getCarrots() - karrotCosts[getDistance(FieldType.GOAL)] > 13 && player.getCarrots() - 10 > 0){
+            newTask = 3;
+        }
 
         if(newTask != 0) {
             if (newTask == 1) {
