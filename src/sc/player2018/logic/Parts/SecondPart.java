@@ -1,4 +1,5 @@
 package sc.player2018.logic.Parts;
+import sc.player2018.logic.Parts.extendedAI.ExtendedAI;
 import sc.plugin2018.*;
 import java.util.ArrayList;
 
@@ -12,47 +13,38 @@ public class SecondPart extends Part{
 
     @Override
     public void processAI() {
-        Board b=super.getGameState().getBoard();
-        distances[0]=b.getNextFieldByType(FieldType.HEDGEHOG,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
-        distances[1]=b.getNextFieldByType(FieldType.HARE,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
-        distances[2]=b.getNextFieldByType(FieldType.POSITION_1,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
-        distances[3]=b.getNextFieldByType(FieldType.POSITION_2,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
-        distances[4]=b.getNextFieldByType(FieldType.SALAD,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
-        distances[5]=b.getNextFieldByType(FieldType.CARROT,super.getPlayer().getFieldIndex())-super.getPlayer().getFieldIndex();
-        enemy_fields[0]=enemyOnNextFieldType(FieldType.HEDGEHOG);
-        enemy_fields[1]=enemyOnNextFieldType(FieldType.HARE);
-        enemy_fields[2]=enemyOnNextFieldType(FieldType.POSITION_1);
-        enemy_fields[3]=enemyOnNextFieldType(FieldType.POSITION_2);
-        enemy_fields[4]=enemyOnNextFieldType(FieldType.SALAD);
-        enemy_fields[5]=enemyOnNextFieldType(FieldType.CARROT);
-        if(!enemy_fields[4]&&super.getKarrotCosts()[distances[4]]<=super.getPlayer().getCarrots()) {
-            super.getActions().add(new Advance(distances[4]));
-            super.setNewTask(1);
-        } else if((!enemy_fields[2]&&super.getKarrotCosts()[distances[2]]<=super.getPlayer().getCarrots())&&(!enemy_fields[3]&&super.getKarrotCosts()[distances[3]]<=super.getPlayer().getCarrots())) {
-            if(super.getPlayer().getFieldIndex()>super.getEnemy().getFieldIndex()) super.getActions().add(new Advance(distances[2]));
-            else if(super.getPlayer().getFieldIndex()+getDistance(FieldType.POSITION_2)<super.getEnemy().getFieldIndex()) super.getActions().add(new Advance(distances[3]));
-            else super.getActions().add(new FallBack(0));
-        } else if(!enemy_fields[5]&&super.getKarrotCosts()[distances[5]]<=super.getPlayer().getCarrots()&&!(super.getPlayer().getLastNonSkipAction() instanceof ExchangeCarrots)) {
-            super.getActions().add(new Advance(distances[5]));
-            if(super.getPlayer().getCarrots()<90) super.setNewTask(2);
-            //else super.setNewTask(3); fixed #19 
-        } else if(!enemy_fields[1]&&super.getKarrotCosts()[distances[1]]<=super.getPlayer().getCarrots()&&(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD)||super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)||super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD))) {
-            super.getActions().add(new Advance(distances[1], 0));
-            if(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD)) super.getActions().add(new Card(CardType.EAT_SALAD,1));
-            else if(super.getPlayer().getCarrots()<50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, 20,1));
-            else if(super.getPlayer().getCarrots()>50&&super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS)) super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20,1));
-            else if(enemy_fields[0]&&super.getPlayer().ownsCardOfType(CardType.HURRY_AHEAD)) super.getActions().add(new Card(CardType.HURRY_AHEAD,1));
-        } else if(isMovePlayable(1, FieldType.CARROT)){
-            super.getActions().add(new Advance(getDistance(FieldType.CARROT)));
-            super.setNewTask(2);
-        } else if(isMovePlayable(1, FieldType.POSITION_2)) {
-            super.getActions().add(new Advance(getDistance(FieldType.POSITION_2)));
-        } else if(isMovePlayable(1, FieldType.POSITION_1)) {
-            super.getActions().add(new Advance(getDistance(FieldType.POSITION_1)));
-        } else if(isMovePlayable(0, FieldType.HEDGEHOG)) {
-            super.getActions().add(new FallBack());
+        if(super.getPlayer().getSalads() > 1) {
+            if(super.getPlayer().getCarrots() - super.getKarrotCosts()[super.getGameState().getBoard().getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] > 0) {
+                if(super.getEnemy().getFieldIndex() != super.getGameState().getBoard().getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex())) {
+                    super.getActions().add(new Advance(super.getDistance(FieldType.SALAD), 0));
+                } else if(0 <super.getPlayer().getCarrots() - super.getKarrotCosts()[super.getGameState().getBoard().getNextFieldByType(FieldType.SALAD, super.getGameState().getBoard().getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex())+1) - super.getPlayer().getFieldIndex()]) {
+                    super.getActions().add(new Advance((super.getGameState().getBoard().getNextFieldByType(FieldType.SALAD, super.getGameState().getBoard().getNextFieldByType(FieldType.SALAD, super.getPlayer().getFieldIndex())+1) - super.getPlayer().getFieldIndex()), 0));
+                }
+                super.setNewTask(1);
+            } else if(super.getPlayer().ownsCardOfType(CardType.EAT_SALAD) && isMovePlayable(1, FieldType.HARE)) {
+                super.getActions().add(new Advance(super.getDistance(FieldType.HARE), 0));
+                super.getActions().add(new Card(CardType.EAT_SALAD,1));
+            } else if(super.getPlayer().ownsCardOfType(CardType.TAKE_OR_DROP_CARROTS) && isMovePlayable(1, FieldType.HARE)) {
+                super.getActions().add(new Advance(super.getDistance(FieldType.HARE), 0));
+                if(super.getPlayer().getCarrots() > 20) {
+                    super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, -20 ,1));
+                } else {
+                    super.getActions().add(new Card(CardType.TAKE_OR_DROP_CARROTS, 20 ,1));
+                }
+            } else if(isMovePlayable(1, FieldType.CARROT)) {
+                super.getActions().add(new Advance(super.getDistance(FieldType.CARROT)));
+                super.setNewTask(2);
+            } else {
+                super.setActions(new ArrayList<Action>(ExtendedAI.getRandomMove(super.getGameState()).getActions()));
+            }
         } else {
-            super.getActions().add(new Skip(0));
+            if(super.getPlayer().getCarrots() - super.getKarrotCosts()[super.getGameState().getBoard().getNextFieldByType(FieldType.GOAL, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] >= 0 && super.getPlayer().getCarrots() - super.getKarrotCosts()[super.getGameState().getBoard().getNextFieldByType(FieldType.GOAL, super.getPlayer().getFieldIndex()) - super.getPlayer().getFieldIndex()] <= 10) {
+                super.getActions().add(new Advance(super.getDistance(FieldType.GOAL), 0));
+            } else if(super.getPlayer().getCarrots() >= super.getKarrotCosts()[44-super.getPlayer().getFieldIndex()]) {
+                super.getActions().add(new Advance(44-super.getPlayer().getFieldIndex()));
+            } else {
+                super.setActions(new ArrayList<Action>(ExtendedAI.getRandomMove(super.getGameState()).getActions()));
+            }
         }
     }
 }
